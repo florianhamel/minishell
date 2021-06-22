@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:36:36 by user42            #+#    #+#             */
-/*   Updated: 2021/04/21 18:51:14 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/06/04 17:20:24 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,36 @@ void			intro(void)
 	write(1, "minishell$ ", 11);
 }
 
-char	*get_cmd(void)
-{
-	char	*str;
+// char	*get_cmd(void)
+// {
+// 	char		*str;
+// 	t_history	*history;
 
-	while (1)
-	{
-		intro();
-		if (!(str = read_mgmt()))
-			return (NULL);
-	}
-}
+// 	history = get_history(20);
+// 	while (1)
+// 	{
+// 		intro();
+// 		if (!(str = read_mgmt(&history)))
+// 			return (NULL);
+		
+// 	}
+// }
 
 void			minishell(void)
 {
-	char	*str;
+	int			status;
+	t_history	*history;
+	char		*str;
 
-	if (!(str = get_cmd()))
-		exit (0);
+	status = 0;
+	history = get_history(20);
+	while (1)
+	{
+		intro();
+		str = get_cmd(&history, &status);
+		// execute_cmd(str, &status);
+		ft_free(str);
+	}
 }
 
 int		main(void)

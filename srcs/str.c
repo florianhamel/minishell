@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/17 12:43:30 by fhamel            #+#    #+#             */
-/*   Updated: 2021/04/23 12:54:08 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/05/09 18:00:37 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ char	*new_del(char *str, size_t pos)
 	cursor_left(1);
 	ws_fd(ft_strlen(next) + 1, 0);
 	cursor_left(ft_strlen(next) + 1);
-	ft_putstr_fd(next, 0);
+	ft_write(0, next, ft_strlen(next));
 	cursor_left(ft_strlen(next));
-	free(prev);
-	free(next);
+	ft_free(prev);
+	ft_free(next);
 	return (new);
 }
 
@@ -45,10 +45,10 @@ char	*new_insert(char *str, size_t pos, int c)
 	if (!(prev = new_alloc(str, pos, pos)))
 		return (NULL);
 	new = ft_strjoin(prev, to_write);
-	ft_putstr_fd(to_write, 0);
+	ft_write(0, to_write, ft_strlen(to_write));
 	cursor_left(ft_strlen(to_write) - 1);
-	free(prev);
-	free(to_write);
+	ft_free(prev);
+	ft_free(to_write);
 	return (new);
 }
 
@@ -59,11 +59,11 @@ char	*new_char(char *str, size_t len, int c)
 	if (!(new = new_alloc(str, len + 1, len)))
 		return (NULL);
 	new[len] = (char)c;
-	write(0, &c, sizeof(c));
+	ft_write(0, &c, sizeof(c));
 	return (new);
 }
 
-char	*str_mgmt(t_read *data)
+void	str_mgmt(t_read *data)
 {
 	if (data->c == DEL_KEY)
 	{
@@ -83,5 +83,4 @@ char	*str_mgmt(t_read *data)
 		(data->pos)++;
 		(data->len)++;
 	}
-	return (data->str);
 }

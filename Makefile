@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
+#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/04/22 15:19:44 by fhamel           ###   ########.fr        #
+#    Updated: 2021/06/08 15:41:14 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,12 +24,15 @@ D_SRCS		=	srcs/
 
 _SRC_		=	main.c \
 				utils.c \
+				utils2.c \
 				read.c \
 				read_utils.c \
-				cursor.c \
+				cursor_mgmt.c \
 				str.c \
 				str_utils.c \
-				history.c
+				history.c \
+				history_mgmt.c \
+				history_utils.c
 
 SRCS		=	$(addprefix $(D_SRCS), $(_SRC_))
 
@@ -53,14 +56,16 @@ OBJS		+=	$(GNL_OBJS)
 ################################################################################
 
 CC			=	clang
+
 FLAGS		=	-Wall -Wextra -Werror
+
 FSANITIZE	=	-g -fsanitize=address
 
 ################################################################################
 #####                            MAKEFILE RULES                            #####
 ################################################################################
 
-all	: $(D_OBJS) $(GNL) $(MINISHELL)
+all	: $(D_OBJS) $(LIBFT) $(MINISHELL)
 
 $(D_OBJS) :
 	mkdir -p $@
@@ -72,10 +77,10 @@ $(D_GNL)%.o : $(D_GNL)%.c
 	$(CC) $(FLAGS) -c $< -o $@ -Ignl
 
 $(D_OBJS)%.o : $(D_SRCS)%.c
-	$(CC) $(FLAGS) -c $< -o $@ -Iincludes -Ilibft
+	$(CC) $(FLAGS) -c $< -o $@ -Iincludes -Ilibft/includes
 
-$(MINISHELL) : $(LIBFT) $(GNL_OBJS) $(OBJS)
-	@$(CC) $(FLAGS) $(OBJS) -L$(D_LIBFT) -lft -o $@
+$(MINISHELL) : $(GNL_OBJS) $(OBJS)
+	$(CC) $(FLAGS) $(OBJS) -L$(D_LIBFT) -lft -o $@
 
 clean :
 	rm -rf $(D_OBJS)
@@ -84,5 +89,6 @@ clean :
 
 fclean : clean
 	rm -rf $(MINISHELL)
+	rm -rf $(D_LIBFT)$(LIBFT)
 
 re : fclean all

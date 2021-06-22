@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:14:47 by fhamel            #+#    #+#             */
-/*   Updated: 2021/04/23 12:56:26 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/04/23 19:12:52 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	cursor_left(int iter)
 	i = 0;
 	while (i < iter)
 	{
-		write(0, "\033[1D", 4);
+		ft_write(0, "\033[1D", 4);
 		i++;
 	}
 }
@@ -31,7 +31,7 @@ void	cursor_right(int iter)
 	i = 0;
 	while (i < iter)
 	{
-		write(0, "\033[1C", 4);
+		ft_write(0, "\033[1C", 4);
 		i++;
 	}
 }
