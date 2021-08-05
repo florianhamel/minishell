@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 14:14:33 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/22 16:06:35 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/06 15:11:51 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 
 	if (!s || !(*f))
 		return (NULL);
-	if (!(new_str = ft_strdup(s)))
+	new_str = ft_strdup(s);
+	if (!new_str)
 		return (NULL);
 	i = 0;
 	while (new_str[i])

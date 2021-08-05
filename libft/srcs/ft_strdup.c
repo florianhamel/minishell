@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 14:25:50 by fhamel            #+#    #+#             */
-/*   Updated: 2019/11/07 13:25:03 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/06 15:07:16 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char	*ft_strdup(const char *s1)
 
 	if (!s1)
 		return (NULL);
-	if (!(new_str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1))))
+	new_str = ft_malloc(sizeof(char), ft_strlen(s1) + 1);
+	if (!new_str)
 		return (NULL);
 	i = 0;
 	while (s1[i])

@@ -6,12 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 14:05:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/06/04 17:14:54 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/05 17:33:37 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
 t_history	*new_history(char *line)
 {

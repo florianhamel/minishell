@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_alloc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/17 16:52:10 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/22 15:52:20 by fhamel           ###   ########.fr       */
+/*   Created: 2021/07/06 13:58:05 by fhamel            #+#    #+#             */
+/*   Updated: 2021/07/06 14:12:51 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "libft_bonus.h"
 
-int	ft_lstsize(t_list *lst)
+void	*ft_malloc(size_t size, size_t len)
 {
-	int		len;
-	t_list	*current;
+	void	*alloc;
 
-	if (!lst)
-		return (0);
-	len = 0;
-	current = lst;
-	while (current != NULL)
-	{
-		len++;
-		current = current->next;
-	}
-	return (len);
+	alloc = malloc(size * len);
+	if (!alloc)
+		return (NULL);
+	return (alloc);
 }

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 11:36:39 by fhamel            #+#    #+#             */
-/*   Updated: 2019/11/07 14:37:37 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/06 15:02:53 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	ft_atoi(const char *str)
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
-		sign = (str[i] == '-') ? -1 : 1;
+		if (str[i] == '-')
+			sign = -1;
 		i++;
 	}
 	while (ft_isdigit(str[i]))

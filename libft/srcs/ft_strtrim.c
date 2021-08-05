@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 15:45:56 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/22 15:46:30 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/06 15:03:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		is_set(char c, char const *set)
+int	is_set(char c, char const *set)
 {
 	int	i;
 
@@ -26,9 +26,9 @@ int		is_set(char c, char const *set)
 	return (0);
 }
 
-int		check_empty(char const *s1, char const *set)
+int	check_empty(char const *s1, char const *set)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i])
@@ -40,7 +40,10 @@ int		check_empty(char const *s1, char const *set)
 	return (1);
 }
 
-int		to_trim_start(char const *s1, char const *set)
+/*
+** to_trim_start
+*/
+int	t_s(char const *s1, char const *set)
 {
 	int	to_trim;
 	int	index;
@@ -55,7 +58,10 @@ int		to_trim_start(char const *s1, char const *set)
 	return (to_trim);
 }
 
-int		to_trim_end(char const *s1, char const *set)
+/*
+** to_trim_end
+*/
+int	t_e(char const *s1, char const *set)
 {
 	int	to_trim;
 	int	index;
@@ -81,16 +87,17 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (NULL);
 	if (check_empty(s1, set))
 	{
-		if (!(str = (char *)malloc(sizeof(char))))
+		str = ft_malloc(sizeof(char), 1);
+		if (!str)
 			return (NULL);
 		*str = '\0';
 		return (str);
 	}
-	if (!(str = (char *)malloc(sizeof(char) *
-	(ft_strlen(s1) - to_trim_start(s1, set) - to_trim_end(s1, set) + 1))))
+	str = ft_malloc(1, ft_strlen(s1) - t_s(s1, set) - t_e(s1, set) + 1);
+	if (!str)
 		return (NULL);
-	end = ft_strlen(s1) - to_trim_end(s1, set);
-	index = to_trim_start(s1, set);
+	end = ft_strlen(s1) - t_e(s1, set);
+	index = t_s(s1, set);
 	i = 0;
 	while (index < end)
 		str[i++] = s1[index++];

@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 11:52:53 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/22 16:46:36 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/10 19:08:28 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		nb_words(char const *s, char c)
+int	nb_words(char const *s, char c)
 {
 	int	nb_words;
 	int	i;
@@ -32,7 +32,7 @@ int		nb_words(char const *s, char c)
 	return (nb_words);
 }
 
-int		len_word(const char *s, char c)
+int	len_word(const char *s, char c)
 {
 	int	i;
 
@@ -62,7 +62,8 @@ char	**arr_alloc(const char *s, char c)
 	int		index;
 	int		i;
 
-	if (!(arr = (char **)malloc(sizeof(char *) * (nb_words(s, c) + 1))))
+	arr = ft_malloc(sizeof(char *), nb_words(s, c) + 1);
+	if (!arr)
 		return (NULL);
 	index = 0;
 	i = 0;
@@ -70,8 +71,8 @@ char	**arr_alloc(const char *s, char c)
 	{
 		while (s[index] == c)
 			index++;
-		if (!(arr[i] = (char *)ft_calloc(len_word(&s[index], c) + 1,
-		sizeof(char))))
+		arr[i] = (char *)ft_calloc(len_word(&s[index], c) + 1, sizeof(char));
+		if (!arr[i])
 		{
 			free_arr(arr, i);
 			return (NULL);
@@ -91,7 +92,8 @@ char	**ft_split(const char *s, char c)
 
 	if (!s)
 		return (NULL);
-	if (!(arr = arr_alloc(s, c)))
+	arr = arr_alloc(s, c);
+	if (!arr)
 		return (NULL);
 	index = 0;
 	i = 0;

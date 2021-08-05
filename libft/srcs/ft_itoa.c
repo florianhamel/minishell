@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:25:53 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/17 13:04:52 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/06 14:18:45 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		get_div(int n)
+int	get_div(int n)
 {
 	long	div;
 
@@ -24,7 +24,7 @@ int		get_div(int n)
 	return (div);
 }
 
-int		get_alloc(int n)
+int	get_alloc(int n)
 {
 	long	div;
 	int		to_alloc;
@@ -72,8 +72,9 @@ char	*ft_itoa(int n)
 
 	div = get_div(n);
 	to_alloc = get_alloc(n);
-	if (!(nbr = (char *)malloc(sizeof(char) * (to_alloc + 1))))
-		return (0);
+	nbr = ft_malloc(sizeof(char), to_alloc + 1);
+	if (!nbr)
+		return (NULL);
 	nbr = get_nbr(div, n, nbr);
 	return (nbr);
 }

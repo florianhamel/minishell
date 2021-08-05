@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 11:10:33 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/22 15:37:11 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/06 14:16:31 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 unsigned long	ft_strlen(const char *s)
 {
-	int i;
+	int	i;
 
 	if (!s)
 		return (0);

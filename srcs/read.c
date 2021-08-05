@@ -6,14 +6,14 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/06/04 17:24:42 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/05 19:27:21 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-void		eof_mgmt(char *str)
+void	eof_mgmt(char *str)
 {
 	if (!str || str[0] == '\0')
 	{
@@ -22,7 +22,7 @@ void		eof_mgmt(char *str)
 	}
 }
 
-void		key_mgmt(t_read *data)
+void	key_mgmt(t_read *data)
 {
 	if (data->c == CTRL_D)
 		eof_mgmt(data->str);
@@ -36,9 +36,11 @@ void		key_mgmt(t_read *data)
 
 void	add_cmd(t_read *data, t_history **history)
 {
-	int			fd;
+	int	fd;
 
-	if ((fd = open("documents/.minishell_history", O_WRONLY | O_APPEND)) < 0)
+	fd = open("documents/.minishell_history", \
+	O_WRONLY | O_APPEND | O_CREAT, 0666);
+	if (fd == ERROR)
 		ft_exit();
 	ft_write(fd, "\n", 1);
 	ft_write(fd, data->str, ft_strlen(data->str));

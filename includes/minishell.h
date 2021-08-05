@@ -6,12 +6,15 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/06/04 17:20:44 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/05 17:33:08 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# include "libft.h"
+# include "gnl.h"
 
 # include <stdio.h>
 # include <unistd.h>
@@ -54,11 +57,6 @@ typedef struct			s_read
 }						t_read;
 
 /*
-** gnl
-*/
-int			get_next_line(int fd, char **line);
-
-/*
 ** main.c
 */
 void		intro(void);
@@ -71,11 +69,6 @@ void		ft_exit(void);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);
-
-/*
-** utils2.c
-*/
-
 
 /*
 ** read.c

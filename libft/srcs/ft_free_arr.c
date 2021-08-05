@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_free_arr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/22 15:36:09 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/22 15:53:19 by fhamel           ###   ########.fr       */
+/*   Created: 2021/07/17 13:29:45 by fhamel            #+#    #+#             */
+/*   Updated: 2021/07/17 13:32:27 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "libft_bonus.h"
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+void	ft_free_arr(char **arr)
 {
-	if (!(*f))
+	int	i;
+
+	i = 0;
+	if (!arr)
 		return ;
-	while (lst)
+	while (arr[i])
 	{
-		(*f)(lst->content);
-		lst = lst->next;
+		free(arr[i]);
+		arr[i] = NULL;
+		i++;
 	}
+	free(arr);
+	arr = NULL;
 }

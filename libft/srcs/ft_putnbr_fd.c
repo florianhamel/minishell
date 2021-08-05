@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:18:17 by fhamel            #+#    #+#             */
-/*   Updated: 2019/10/22 15:36:51 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/07/06 15:13:42 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	long nb;
+	long	nb;
 
 	nb = (long)n;
 	if (nb < 0)
