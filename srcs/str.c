@@ -6,23 +6,25 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/17 12:43:30 by fhamel            #+#    #+#             */
-/*   Updated: 2021/05/09 18:00:37 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/07 12:26:18 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-char	*new_del(char *str, size_t pos)
+char	*new_del(t_read *data)
 {
 	char	*new;
 	char	*prev;
 	char	*next;
 
-	if (!(next = get_next(str, pos)))
-		return (NULL);
-	if (!(prev = new_alloc(str, pos - 1, pos - 1)))
-		return (NULL);
+	next = get_next(data);
+	if (!next)
+		exit_parsing(data);
+	prev = new_alloc(data->str, data->pos - 1, data->pos - 1);
+	if (!prev)
+		exit_parsing(data);
 	new = ft_strjoin(prev, next);
 	cursor_left(1);
 	ws_fd(ft_strlen(next) + 1, 0);
@@ -34,16 +36,16 @@ char	*new_del(char *str, size_t pos)
 	return (new);
 }
 
-char	*new_insert(char *str, size_t pos, int c)
+char	*new_insert(t_read *data)
 {
 	char	*prev;
 	char	*to_write;
 	char	*new;
 	
-	if (!(to_write = get_to_write(str, pos, c)))
-		return (NULL);
-	if (!(prev = new_alloc(str, pos, pos)))
-		return (NULL);
+	to_write = get_to_write(data);
+	prev = new_alloc(data->str, data->pos, data->pos);
+	if (!prev)
+		exit_parsing(data);
 	new = ft_strjoin(prev, to_write);
 	ft_write(0, to_write, ft_strlen(to_write));
 	cursor_left(ft_strlen(to_write) - 1);
@@ -52,14 +54,15 @@ char	*new_insert(char *str, size_t pos, int c)
 	return (new);
 }
 
-char	*new_char(char *str, size_t len, int c)
+char	*new_char(t_read *data)
 {
 	char	*new;
 
-	if (!(new = new_alloc(str, len + 1, len)))
-		return (NULL);
-	new[len] = (char)c;
-	ft_write(0, &c, sizeof(c));
+	new = new_alloc(data->str, data->pos + 1, data->pos);
+	if (!new)
+		exit_parsing(data);
+	new[data->pos] = (char)data->c;
+	ft_write(0, &data->c, sizeof(data->c));
 	return (new);
 }
 
@@ -69,7 +72,7 @@ void	str_mgmt(t_read *data)
 	{
 		if (data->pos > 0)
 		{
-			data->str = new_del(data->str, data->pos);
+			data->str = new_del(data);
 			(data->pos)--;
 			(data->len)--;
 		}
@@ -77,9 +80,9 @@ void	str_mgmt(t_read *data)
 	else
 	{
 		if (data->pos < data->len)
-			data->str = new_insert(data->str, data->pos, data->c);
+			data->str = new_insert(data);
 		else
-			data->str = new_char(data->str, data->len, data->c);
+			data->str = new_char(data);
 		(data->pos)++;
 		(data->len)++;
 	}

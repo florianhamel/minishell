@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:14:47 by fhamel            #+#    #+#             */
-/*   Updated: 2021/04/23 19:12:52 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/06 11:10:49 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	cursor_right(int iter)
 	}
 }
 
-void	cursor_mgmt(t_read *data)
+void	cursor_move(t_read *data)
 {
 	if (data->c == RIGHT_KEY)
 	{

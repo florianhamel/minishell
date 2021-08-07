@@ -6,24 +6,27 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 13:30:54 by fhamel            #+#    #+#             */
-/*   Updated: 2021/04/22 13:31:31 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/06 19:32:53 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-char	*get_next(char *str, size_t pos)
+char	*get_next(t_read *data)
 {
 	char	*next;
+	int		pos;
 	int		i;
 
+	pos = data->pos;
 	i = 0;
-	if (!(next = malloc(ft_strlen(str) - pos + 1)))
-		return (NULL);
-	while (str[pos])
+	next = malloc(ft_strlen(data->str) - pos + 1);
+	if (!next)
+		exit_parsing(data);
+	while (data->str[pos])
 	{
-		next[i] = str[pos];
+		next[i] = data->str[pos];
 		pos++;
 		i++;
 	}
@@ -31,18 +34,21 @@ char	*get_next(char *str, size_t pos)
 	return (next);
 }
 
-char	*get_to_write(char *str, size_t pos, int c)
+char	*get_to_write(t_read *data)
 {
 	char	*to_write;
-	int				i;
+	int		pos;
+	int		i;
 
+	pos = data->pos;
 	i = 1;
-	if (!(to_write = malloc(ft_strlen(str) - pos + 2)))
-		return (NULL);
-	to_write[0] = (char)c;
-	while (str[pos])
+	to_write = malloc(ft_strlen(data->str) - data->pos + 2);
+	if (!to_write)
+		exit_parsing(data);
+	to_write[0] = (char)data->c;
+	while (data->str[pos])
 	{
-		to_write[i] = str[pos];
+		to_write[i] = data->str[pos];
 		pos++;
 		i++;
 	}

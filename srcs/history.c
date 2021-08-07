@@ -6,17 +6,18 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 14:05:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/05 17:33:37 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/06 17:18:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_history	*new_history(char *line)
+t_history	*new_elem_history(char *line)
 {
 	t_history *elem;
 
-	if (!(elem = malloc(sizeof(t_history))))
+	elem = malloc(sizeof(t_history));
+	if (!elem)
 		ft_exit();
 	elem->cmd = line;
 	elem->next = NULL;
@@ -24,19 +25,19 @@ t_history	*new_history(char *line)
 	return (elem);
 }
 
-void		append_cmd(t_history **history, char *line)
+void	append_cmd(t_history **history, char *line)
 {
 	t_history	*current;
 	t_history	*new;
 
 	if (!(*history))
-		*history = new_history(line);
+		*history = new_elem_history(line);
 	else
 	{
 		current = *history;
 		while (current->prev)
 			current = current->prev;
-		new = new_history(line);
+		new = new_elem_history(line);
 		new->next = current;
 		current->prev = new;
 	}
@@ -50,23 +51,29 @@ t_history	*get_list(int fd, int max)
 	int			i;
 
 	history = NULL;
+	line = NULL;
+	ret = get_next_line(fd, &line);
 	i = 0;
-	while (i < max && (ret = get_next_line(fd, &line)) > 0)
+	while (i < max && ret > 0)
 	{
 		if (line && line[0])
 		{
 			append_cmd(&history, line);
 			i++;
 		}
+		ft_free((void **)&line);
+		ret = get_next_line(fd, &line);
 	}
 	if (ret < 0)
 		ft_exit();
+	if (!history)
+		history = new_elem_history(line);
 	if (line && line[0])
 		append_cmd(&history, line);
 	return (history);
 }
 
-void		flip_history(t_history **history)
+void	flip_history(t_history **history)
 {
 	t_history	*current;
 
@@ -82,9 +89,9 @@ t_history	*get_history(int max)
 	int			fd;
 	int			nb_lines;
 
-	if ((nb_lines = get_nb_lines()) < 0)
-		ft_exit();
-	if ((fd = go_to_line(nb_lines, max)) < 0)
+	nb_lines = get_nb_lines();
+	fd = go_to_line(nb_lines, max);
+	if (fd < 0)
 		ft_exit();
 	history = get_list(fd, max);
 	if (history)

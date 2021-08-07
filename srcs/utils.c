@@ -6,27 +6,38 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 18:03:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/06/03 14:55:13 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/07 12:39:26 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
-void		*ft_free(void *ptr)
+void	ft_free(void **ptr)
 {
-	if (ptr)
-		free(ptr);
-	return(NULL);
+	free(*ptr);
+	*ptr = NULL;
 }
 
-void		ft_exit(void)
+void	ft_exit(void)
 {
 	printf("%s\n", strerror(errno));
 	exit(errno);
 }
 
-ssize_t		ft_write(int fd, const void *buf, size_t nbyte)
+void	free_parsing(t_read *data)
+{
+	free_history(data->current);
+	ft_free((void **)&data->str);
+	ft_free((void **)&data);
+}
+
+void	exit_parsing(t_read *data)
+{
+	free_parsing(data);
+	ft_exit();
+}
+
+ssize_t	ft_write(int fd, const void *buf, size_t nbyte)
 {
 	ssize_t	ret;
 
@@ -38,7 +49,7 @@ ssize_t		ft_write(int fd, const void *buf, size_t nbyte)
 	return (ret);
 }
 
-void		ws_fd(size_t nb, int fd)
+void	ws_fd(size_t nb, int fd)
 {
 	size_t	i;
 
@@ -50,16 +61,17 @@ void		ws_fd(size_t nb, int fd)
 	}
 }
 
-char		*new_alloc(char *str, size_t size, size_t pos)
+char	*new_alloc(char *str, size_t size, size_t pos)
 {
 	char	*new;
 	size_t	i;
 
 	i = 0;
-	if (!(new = malloc(size + 1)))
+	new = malloc(size + 1);
+	if (!new)
 		return (NULL);
 	new = (char *)ft_memcpy(new, str, pos);
 	new[size] = '\0';
-	str = ft_free(str);
+	ft_free((void **)&str);
 	return (new);
 }
