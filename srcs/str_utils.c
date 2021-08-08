@@ -6,12 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 13:30:54 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/06 19:32:53 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/08 11:48:15 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
 char	*get_next(t_read *data)
 {

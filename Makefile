@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/08/06 11:13:53 by fhamel           ###   ########.fr        #
+#    Updated: 2021/08/08 02:47:39 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ _SRC_		=	cursor_move.c \
 				gnl.c \
 				history_navigation.c \
 				history_utils.c \
+				history_utils2.c \
 				history.c \
 				main.c \
 				read.c \
@@ -83,7 +84,7 @@ $(D_OBJS)%.o : $(D_SRCS)%.c
 
 $(NAME) : compiling_start_m $(OBJS) compiling_end_m
 	@python -c 'print u"\033[0;33m\u2192 " + "Linking objects for \033[0;34m$(NAME)\033[0;33m... \033[0m"'
-	@$(CC) $(FSANITIZE) $(OBJS) -L$(D_LIBFT) -lft -o $(NAME)
+	@$(CC) $(OBJS) -L$(D_LIBFT) -lft -o $(NAME)
 	@python -c 'print u"\033[0;32mLinking successful \u2713 \033[0m"'
 
 clean :

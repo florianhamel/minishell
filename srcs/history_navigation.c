@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   history_nav.c                                      :+:      :+:    :+:   */
+/*   history_navigation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 14:51:47 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/06 11:10:01 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/08 11:48:00 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 // quand NL_KEY est pressed:
 // ajoute la commande entrée dans le fichier
 // ajoute un élément à la liste contenant la commande
-
 
 void	go_up(t_read *data)
 {

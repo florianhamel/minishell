@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 17:16:40 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/06 15:27:59 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/07 23:50:23 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ void	push_front(t_history *elem, t_history **history)
 
 void	replace_alloc(char *str, t_history *elem)
 {
-	ft_free((void **)&elem->cmd);
-	if (!(elem->cmd = ft_strdup(str)))
+	ft_free((void **)&(elem->cmd));
+	elem->cmd = ft_strdup(str);
+	if (!elem->cmd)
 		ft_exit();
 }
 

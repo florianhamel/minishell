@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 18:03:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/07 12:39:26 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/08 11:50:44 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ ssize_t	ft_write(int fd, const void *buf, size_t nbyte)
 	ret = 0;
 	if (!buf)
 		return (ret);
-	if ((ret = write(fd, buf, nbyte)) < 0)
+	ret = write(fd, buf, nbyte);
+	if (ret == ERROR)
 		ft_exit();
 	return (ret);
 }

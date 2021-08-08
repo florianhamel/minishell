@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/06 19:32:29 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/07 13:33:16 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int			get_last_char(t_read *data);
 void		eof_mgmt(t_read *data);
 void		key_mgmt(t_read *data);
 void		add_cmd(t_read *data, t_history **history);
-char		*get_cmd(t_history **history, int *status);
+t_read		*get_cmd(t_history **history, int *status);
 
 /*
 ** str_utils.c

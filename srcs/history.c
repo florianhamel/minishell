@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 14:05:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/06 17:18:34 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/08 11:53:44 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_history	*new_elem_history(char *line)
 {
-	t_history *elem;
+	t_history	*elem;
 
 	elem = malloc(sizeof(t_history));
 	if (!elem)
@@ -61,15 +61,17 @@ t_history	*get_list(int fd, int max)
 			append_cmd(&history, line);
 			i++;
 		}
-		ft_free((void **)&line);
+		else
+			ft_free((void **)&line);
 		ret = get_next_line(fd, &line);
 	}
-	if (ret < 0)
+	ft_free((void **)&line);
+	if (ret == ERROR)
 		ft_exit();
 	if (!history)
-		history = new_elem_history(line);
-	if (line && line[0])
-		append_cmd(&history, line);
+		history = new_elem_history(NULL);
+	// if (line && line[0])
+	// 	append_cmd(&history, line);
 	return (history);
 }
 

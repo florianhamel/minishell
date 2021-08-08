@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/08/06 19:02:37 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/08 12:22:02 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,22 @@ void	key_mgmt(t_read *data)
 
 void	add_cmd(t_read *data, t_history **history)
 {
-	int	fd;
+	int			fd;
 
 	fd = open("documents/.minishell_history", \
 	O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (fd == ERROR)
 		ft_exit();
-	ft_write(fd, "\n", 1);
-	ft_write(fd, data->str, ft_strlen(data->str));
-	replace_alloc(data->str, *history);
+	if (data->str)
+	{
+		ft_write(fd, "\n", 1);
+		ft_write(fd, data->str, ft_strlen(data->str));
+		replace_alloc(data->str, *history);
+		push_front(new_elem_history(NULL), history);
+	}
 }
 
-char	*get_cmd(t_history **history, int *status)
+t_read	*get_cmd(t_history **history, int *status)
 {
 	t_read		*data;
 
@@ -64,14 +68,14 @@ char	*get_cmd(t_history **history, int *status)
 		if (data->c == NL_KEY || data->c == CTRL_C)
 		{
 			if (data->c == CTRL_C)
-				*status = 1;
+				abort_cmd(status);
 			else if (data->c == NL_KEY)
-				add_cmd(data, history); // ISSUE THERE WHEN ONLY NL
-			break;
+				add_cmd(data, history);
+			break ;
 		}
 		else
 			key_mgmt(data);
 	}
 	printf("\nprintf : %s\n", data->str);
-	return (data->str);
+	return (data);
 }
