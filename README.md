@@ -6,8 +6,9 @@ Work in progress - for the moment, it only gets the command line typed, and has 
 
 To run it:
 - Use a UNIX based system (`MacOS` or `Linux` for example)
-- Use `make` and `./minishell`
+- Clone this repository
+- Use `make` and `./minishell` inside the repository
 - You can use side arrows to navigate through the command line and up/down arrows to navigate through the history
-- `ctrl + c` and `ctrl + d` work the same as in bash
+- `ctrl + C` and `ctrl + D` work the same as in bash
 
 Minishell is a 42 project.
