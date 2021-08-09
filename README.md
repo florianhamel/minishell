@@ -10,4 +10,4 @@ To run it:
 - You can use side arrows to navigate through the command line and up/down arrows to navigate through the history
 - `Ctrl + C` and `Ctrl + D` work
 
-Minishell is a 42 project made in C.
+Minishell is a 42 project.
