@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/07 13:33:16 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 16:33:15 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,14 @@ void		cursor_left(int iter);
 void		cursor_move(t_read *data);
 
 /*
+** free_exit.c
+*/
+void		free_null(void **ptr);
+void		exit_strerror(void);
+void		free_parsing(t_read *data);
+void		exit_parsing(t_read *data);
+
+/*
 ** history_navigation.c
 */
 void		go_up(t_read *data);
@@ -72,24 +80,24 @@ void		history_navigation(t_read *data);
 /*
 ** history_utils.c
 */
-int			get_nb_lines(void);
-int			go_to_line(int nb_lines, int max);
+t_history	*new_elem_history(char *line);
 void		push_front(t_history *elem, t_history **history);
-void		replace_alloc(char *str, t_history *elem);
-void		write_ws(size_t nb);
-void		wipe_and_replace(t_read *data, t_history *elem);
-void		print_list(t_history *history);
+void		append_cmd(t_history **history, char *line);
+void		free_history(t_history *elem);
+void		fill_history(int fd, int max, t_history **history);
 
 /*
 ** history_utils2.c
 */
-void		free_history(t_history *elem);
+void		replace_alloc(char *str, t_history *elem);
+void		write_ws(size_t nb);
+void		wipe_and_replace(t_read *data, t_history *elem);
 
 /*
 ** history.c
 */
-t_history	*new_elem_history(char *line);
-void		append_cmd(t_history **history, char *line);
+int			get_nb_lines(void);
+int			go_to_line(int nb_lines, int max);
 t_history	*get_list(int fd, int max);
 void		flip_history(t_history **history);
 t_history	*get_history(int max);
@@ -98,11 +106,13 @@ t_history	*get_history(int max);
 ** main.c
 */
 void		intro(void);
+void		minishell(void);
 
 /*
 ** read_utils.c
 */
 t_read		*init_data(t_history **history);
+void		abort_cmd(t_read *data, int *status);
 int			ft_getc(t_read *data);
 int			get_last_char(t_read *data);
 
@@ -131,10 +141,7 @@ void		str_mgmt(t_read *data);
 /*
 ** utils.c
 */
-void		ft_free(void **ptr);
-void		free_parsing(t_read *data);
-void		exit_parsing(t_read *data);
-void		ft_exit(void);
+
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);

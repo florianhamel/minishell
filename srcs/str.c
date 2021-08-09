@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/17 12:43:30 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/07 12:51:30 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 16:32:30 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ char	*new_del(t_read *data)
 	cursor_left(ft_strlen(next) + 1);
 	ft_write(0, next, ft_strlen(next));
 	cursor_left(ft_strlen(next));
-	ft_free((void **)&prev);
-	ft_free((void **)&next);
+	free_null((void **)&prev);
+	free_null((void **)&next);
 	return (new);
 }
 
@@ -40,7 +40,7 @@ char	*new_insert(t_read *data)
 	char	*prev;
 	char	*to_write;
 	char	*new;
-	
+
 	to_write = get_to_write(data);
 	prev = new_alloc(data->str, data->pos, data->pos);
 	if (!prev)
@@ -48,8 +48,8 @@ char	*new_insert(t_read *data)
 	new = ft_strjoin(prev, to_write);
 	ft_write(0, to_write, ft_strlen(to_write));
 	cursor_left(ft_strlen(to_write) - 1);
-	ft_free((void **)&prev);
-	ft_free((void **)&to_write);
+	free_null((void **)&prev);
+	free_null((void **)&to_write);
 	return (new);
 }
 

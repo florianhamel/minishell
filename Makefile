@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/08/08 02:47:39 by fhamel           ###   ########.fr        #
+#    Updated: 2021/08/09 14:21:23 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ D_OBJS		=	objs/
 D_SRCS		=	srcs/
 
 _SRC_		=	cursor_move.c \
+				free_exit.c \
 				gnl.c \
 				history_navigation.c \
 				history_utils.c \

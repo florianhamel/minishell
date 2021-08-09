@@ -6,36 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 18:03:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/08 11:50:44 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 13:58:27 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_free(void **ptr)
-{
-	free(*ptr);
-	*ptr = NULL;
-}
-
-void	ft_exit(void)
-{
-	printf("%s\n", strerror(errno));
-	exit(errno);
-}
-
-void	free_parsing(t_read *data)
-{
-	free_history(data->current);
-	ft_free((void **)&data->str);
-	ft_free((void **)&data);
-}
-
-void	exit_parsing(t_read *data)
-{
-	free_parsing(data);
-	ft_exit();
-}
 
 ssize_t	ft_write(int fd, const void *buf, size_t nbyte)
 {
@@ -46,7 +21,7 @@ ssize_t	ft_write(int fd, const void *buf, size_t nbyte)
 		return (ret);
 	ret = write(fd, buf, nbyte);
 	if (ret == ERROR)
-		ft_exit();
+		exit_strerror();
 	return (ret);
 }
 
@@ -73,6 +48,6 @@ char	*new_alloc(char *str, size_t size, size_t pos)
 		return (NULL);
 	new = (char *)ft_memcpy(new, str, pos);
 	new[size] = '\0';
-	ft_free((void **)&str);
+	free_null((void **)&str);
 	return (new);
 }

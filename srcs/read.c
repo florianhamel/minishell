@@ -6,12 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/08/09 00:48:12 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 16:30:54 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
 void	eof_mgmt(t_read *data)
 {
@@ -19,7 +18,7 @@ void	eof_mgmt(t_read *data)
 	{
 		free_parsing(data);
 		printf("exit\n");
-		exit(1);
+		exit(0);
 	}
 }
 
@@ -42,7 +41,7 @@ void	add_cmd(t_read *data, t_history **history)
 	fd = open("documents/.minishell_history", \
 	O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (fd == ERROR)
-		ft_exit();
+		exit_strerror();
 	if (data->str)
 	{
 		ft_write(fd, "\n", 1);
@@ -60,7 +59,7 @@ t_read	*get_cmd(t_history **history, int *status)
 	if (!data)
 	{
 		free_history(*history);
-		ft_exit();
+		exit_strerror();
 	}
 	while (1)
 	{
@@ -68,7 +67,7 @@ t_read	*get_cmd(t_history **history, int *status)
 		if (data->c == NL_KEY || data->c == CTRL_C)
 		{
 			if (data->c == CTRL_C)
-				*status = 130;
+				abort_cmd(data, status);
 			else if (data->c == NL_KEY)
 				add_cmd(data, history);
 			break ;

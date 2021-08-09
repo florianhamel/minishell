@@ -6,71 +6,72 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 14:05:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/09 02:36:27 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 16:27:16 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_history	*new_elem_history(char *line)
+int	get_nb_lines(void)
 {
-	t_history	*elem;
+	char	*line;
+	int		fd;
+	int		nb;
+	int		ret;
 
-	elem = malloc(sizeof(t_history));
-	if (!elem)
-		ft_exit();
-	elem->cmd = line;
-	elem->next = NULL;
-	elem->prev = NULL;
-	return (elem);
+	line = NULL;
+	nb = 0;
+	fd = open("documents/.minishell_history", O_RDONLY | O_CREAT, 0666);
+	if (fd == ERROR)
+		exit_strerror();
+	ret = get_next_line(fd, &line);
+	while (ret > 0)
+	{
+		nb++;
+		free_null((void **)&line);
+		ret = get_next_line(fd, &line);
+	}
+	free_null((void **)&line);
+	if (close(fd) == ERROR || ret == ERROR)
+		exit_strerror();
+	if (nb == 0)
+		return (nb);
+	return (nb + 1);
 }
 
-void	append_cmd(t_history **history, char *line)
+int	go_to_line(int nb_lines, int max)
 {
-	t_history	*current;
-	t_history	*new;
+	int		fd;
+	char	*line;
+	int		ret;
+	int		count;
 
-	if (!(*history))
-		*history = new_elem_history(line);
-	else
+	fd = open("documents/.minishell_history", O_RDONLY, 0666);
+	if (fd == ERROR)
+		exit_strerror();
+	line = NULL;
+	ret = get_next_line(fd, &line);
+	count = 1;
+	while (count < nb_lines - max && ret > 0)
 	{
-		current = *history;
-		while (current->prev)
-			current = current->prev;
-		new = new_elem_history(line);
-		new->next = current;
-		current->prev = new;
+		free_null((void **)&line);
+		ret = get_next_line(fd, &line);
+		count++;
 	}
+	free_null((void **)&line);
+	if (ret == ERROR)
+		exit_strerror();
+	return (fd);
 }
 
 t_history	*get_list(int fd, int max)
 {
 	t_history	*history;
 	char		*line;
-	int			ret;
-	int			i;
 
 	history = NULL;
 	line = NULL;
-	ret = get_next_line(fd, &line);
-	i = 0;
-	while (i < max && ret > 0)
-	{
-		if (line && line[0])
-		{
-			append_cmd(&history, line);
-			i++;
-		}
-		else
-			ft_free((void **)&line);
-		ret = get_next_line(fd, &line);
-	}
-	if (line && line[0])
-		append_cmd(&history, line);
-	else
-		ft_free((void **)&line);
-	if (ret == ERROR)
-		ft_exit();
+	fill_history(fd, max, &history);
 	if (!history)
 		history = new_elem_history(NULL);
 	return (history);
@@ -95,7 +96,7 @@ t_history	*get_history(int max)
 	nb_lines = get_nb_lines();
 	fd = go_to_line(nb_lines, max);
 	if (fd < 0)
-		ft_exit();
+		exit_strerror();
 	history = get_list(fd, max);
 	flip_history(&history);
 	if (history->cmd)

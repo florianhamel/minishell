@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:15:53 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/08 11:47:15 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 16:32:19 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_read	*init_data(t_history **history)
 	if (!data)
 	{
 		free_history(*history);
-		ft_exit();
+		exit_strerror();
 	}
 	data->c = 0;
 	data->pos = 0;
@@ -28,6 +28,13 @@ t_read	*init_data(t_history **history)
 	data->current = *history;
 	data->str = NULL;
 	return (data);
+}
+
+void	abort_cmd(t_read *data, int *status)
+{
+	printf("^C");
+	free_null((void **)&(data->str));
+	*status = 130;
 }
 
 int	ft_getc(t_read *data)
