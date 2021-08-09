@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/09 16:33:15 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 16:50:23 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@
 # define CTRL_D 4
 # define ERROR -1
 
-typedef struct	s_history
+typedef struct s_history
 {
 	char				*cmd;
 	struct s_history	*prev;
 	struct s_history	*next;
 }		t_history;
 
-typedef struct	s_read
+typedef struct s_read
 {
 	int					c;
 	size_t				pos;
