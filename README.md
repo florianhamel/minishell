@@ -8,6 +8,6 @@ To run it:
 - Use a UNIX based system (`MacOS` or `Linux` for example)
 - Use `make` and `./minishell`
 - You can use side arrows to navigate through the command line and up/down arrows to navigate through the history
-- `Ctrl + C` and `Ctrl + D` work
+- `ctrl + c` and `ctrl + d` work the same as in bash
 
 Minishell is a 42 project.
