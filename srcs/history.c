@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 14:05:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/08 11:53:44 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 02:36:27 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,14 @@ t_history	*get_list(int fd, int max)
 			ft_free((void **)&line);
 		ret = get_next_line(fd, &line);
 	}
-	ft_free((void **)&line);
+	if (line && line[0])
+		append_cmd(&history, line);
+	else
+		ft_free((void **)&line);
 	if (ret == ERROR)
 		ft_exit();
 	if (!history)
 		history = new_elem_history(NULL);
-	// if (line && line[0])
-	// 	append_cmd(&history, line);
 	return (history);
 }
 
@@ -96,7 +97,8 @@ t_history	*get_history(int max)
 	if (fd < 0)
 		ft_exit();
 	history = get_list(fd, max);
-	if (history)
-		flip_history(&history);
+	flip_history(&history);
+	if (history->cmd)
+		push_front(new_elem_history(NULL), &history);
 	return (history);
 }

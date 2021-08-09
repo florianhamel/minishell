@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/08/08 12:22:02 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 00:48:12 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_read	*get_cmd(t_history **history, int *status)
 		if (data->c == NL_KEY || data->c == CTRL_C)
 		{
 			if (data->c == CTRL_C)
-				abort_cmd(status);
+				*status = 130;
 			else if (data->c == NL_KEY)
 				add_cmd(data, history);
 			break ;

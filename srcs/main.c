@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:36:36 by user42            #+#    #+#             */
-/*   Updated: 2021/08/08 00:42:18 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/09 01:04:41 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ void			minishell(void)
 
 	status = 0;
 	history = get_history(20);
-	push_front(new_elem_history(NULL), &history);
+	print_list(history);
 	while (1)
 	{
 		intro();
 		data = get_cmd(&history, &status);
 		// execute_cmd(str, &status);
+		if (!ft_strncmp(data->str, "exit", 5))
+			exit(0);
 		ft_free((void **)&(data->str));
 		ft_free((void **)&data);
 	}
