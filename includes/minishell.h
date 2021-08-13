@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/09 16:50:23 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/12 13:27:23 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@
 # include <string.h>
 # include <errno.h>
 # include <fcntl.h>
-# include <sys/stat.h>
-# include <dirent.h>
-# include <signal.h>
 
 # define NL_KEY 10
 # define RIGHT_KEY 4414235
@@ -63,7 +60,7 @@ void		cursor_left(int iter);
 void		cursor_move(t_read *data);
 
 /*
-** free_exit.c
+** free_exit_parsing.c
 */
 void		free_null(void **ptr);
 void		exit_strerror(void);
@@ -82,7 +79,7 @@ void		history_navigation(t_read *data);
 */
 t_history	*new_elem_history(char *line);
 void		push_front(t_history *elem, t_history **history);
-void		append_cmd(t_history **history, char *line);
+void		append_history(t_history **history, char *line);
 void		free_history(t_history *elem);
 void		fill_history(int fd, int max, t_history **history);
 
@@ -122,7 +119,7 @@ int			get_last_char(t_read *data);
 void		eof_mgmt(t_read *data);
 void		key_mgmt(t_read *data);
 void		add_cmd(t_read *data, t_history **history);
-t_read		*get_cmd(t_history **history, int *status);
+t_read		*get_input(t_history **history, int *status);
 
 /*
 ** str_utils.c
@@ -139,9 +136,10 @@ char		*new_char(t_read *data);
 void		str_mgmt(t_read *data);
 
 /*
-** utils.c
+** utils_parsing.c
 */
 
+char		**copy_env(void);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);

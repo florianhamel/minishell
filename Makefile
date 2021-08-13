@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/08/09 14:21:23 by fhamel           ###   ########.fr        #
+#    Updated: 2021/08/12 00:26:42 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ D_OBJS		=	objs/
 D_SRCS		=	srcs/
 
 _SRC_		=	cursor_move.c \
-				free_exit.c \
+				free_exit_parsing.c \
 				gnl.c \
 				history_navigation.c \
 				history_utils.c \
@@ -34,7 +34,7 @@ _SRC_		=	cursor_move.c \
 				read_utils.c \
 				str.c \
 				str_utils.c \
-				utils.c \
+				utils_parsing.c \
 
 SRCS		=	$(addprefix $(D_SRCS), $(_SRC_))
 

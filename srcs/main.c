@@ -6,36 +6,46 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:36:36 by user42            #+#    #+#             */
-/*   Updated: 2021/08/09 16:39:12 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/13 12:03:29 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "minishell2.h"
 
 void	intro(void)
 {
 	write(1, "minishell$ ", 11);
 }
 
+t_data	*init_data()
+{
+	t_data	*data;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		exit_strerror();
+	data->env = copy_env();
+	data->status = 0;
+	data->str = NULL;
+	data->history = get_history(20);
+	data->cmd_lst = NULL;
+	return (data);
+}
+
 void	minishell(void)
 {
-	int			status;
-	t_history	*history;
-	t_read		*data;
+	t_data		*data;
+	t_read		*data_parsing;
 
-	history = get_history(20);
+	data = init_data();
 	while (1)
 	{
-		status = 0;
 		intro();
-		data = get_cmd(&history, &status);
-		if (!ft_strncmp(data->str, "exit", 5))
-		{
-			free_parsing(data);
-			exit(0);
-		}
-		free_null((void **)&(data->str));
-		free_null((void **)&data);
+		data_parsing = get_input(&(data->history), &(data->status));
+		data->str = data_parsing->str;
+		free_null((void **)&data_parsing);
+		execute_cmd(data);
 	}
 }
 

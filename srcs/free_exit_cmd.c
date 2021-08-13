@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_exit.c                                        :+:      :+:    :+:   */
+/*   free_exit_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/27 14:48:42 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/09 13:58:02 by fhamel           ###   ########.fr       */
+/*   Created: 2021/08/11 14:20:59 by fhamel            #+#    #+#             */
+/*   Updated: 2021/08/12 13:29:33 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell2.h"
 
-void	free_null(void **ptr)
+void	free_data(t_data *data)
 {
-	free(*ptr);
-	*ptr = NULL;
-}
-
-void	exit_strerror(void)
-{
-	printf("%s\n", strerror(errno));
-	exit(errno);
-}
-
-void	free_parsing(t_read *data)
-{
-	free_history(data->current);
-	free_null((void **)&data->str);
+	free_null((void **)&(data->str));
+	free_cmd_lst(data->cmd_lst);
 	free_null((void **)&data);
 }
 
-void	exit_parsing(t_read *data)
+void	exit_custom(t_data *data, char *serror, int flag)
 {
-	free_parsing(data);
+	ft_free_arr(data->env);
+	free_history(data->history);
+	free_data(data);
+	if (flag == CUSTOM)
+	{
+		printf("%s\n", serror);
+		exit(data->status);
+	}
 	exit_strerror();
 }
