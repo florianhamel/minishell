@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:15:53 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/09 16:32:19 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:20:00 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_read	*init_data(t_history **history)
+t_read	*init_read(t_history **history)
 {
 	t_read		*data;
 

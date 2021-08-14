@@ -6,11 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/13 22:35:56 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:36:20 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell2.h"
+#include "minishell.h"
 
 void	redir_syntax_error(t_data *data, int *pos, t_cmd *cmd)
 {
@@ -26,19 +26,19 @@ void	redir_syntax_error(t_data *data, int *pos, t_cmd *cmd)
 		exit_custom(data, serror, CUSTOM);
 }
 
-void	redir_mgmt(t_data *data, int *pos, t_cmd *cmd)
+void	set_redir(t_data *data, int *pos, t_cmd *cmd)
 {
 	redir_syntax_error(data, pos, cmd);
 	if (data->str[*pos] == '<')
 	{
 		cmd->flag_in = get_flag_in(data, pos);
-		cmd->infile = get_infile(data, pos);
+		cmd->infile = get_file_cmd(data, pos);
 		if (cmd->flag_in == DOUBLE_LEFT)
 			cmd->word = get_word(data, pos);
 	}
 	else
 	{
-		cmd->flag_out = get_flag_out(data, pos, cmd);
-		cmd->outfile = get_outfile(data, pos, cmd);
+		cmd->flag_out = get_flag_out(data, pos);
+		cmd->outfile = get_file_cmd(data, pos);
 	}
 }

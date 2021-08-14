@@ -6,22 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 14:51:47 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/09 00:57:12 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:35:41 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
-
-// get_history une seule fois
-// quand UP_KEY est pressed:
-// - tout est dépendant de la liste récupérée
-// - si un modification avait été apportée à la ligne, celle-ci est sauvegardée
-// - si l'élément en cours n'appartenait pas à la liste, ce dernier y est ajouté
-
-// quand NL_KEY est pressed:
-// ajoute la commande entrée dans le fichier
-// ajoute un élément à la liste contenant la commande
 
 void	go_up(t_read *data)
 {

@@ -6,11 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:51:42 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/13 12:20:43 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:34:14 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell2.h"
+#include "minishell.h"
 
 int	is_redir(int c)
 {
@@ -26,9 +26,21 @@ int	is_quote(int c)
 	return (0);
 }
 
-int	is_closed_quotes(t_data *data, int *pos)
+
+int		is_closed_quote(t_data *data, int *pos)
 {
-	
+	int	char_quote;
+	int	i;
+
+	char_quote = data->str[*pos];
+	i = *pos + 1;
+	while (data->str[i])
+	{
+		if (data->str[i] == char_quote)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	is_special_char(int c)

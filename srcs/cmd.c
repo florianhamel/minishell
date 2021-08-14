@@ -6,11 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:56:07 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/12 17:11:48 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:34:24 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell2.h"
+#include "minishell.h"
 
 t_cmd	*new_elem_cmd(t_data *data)
 {

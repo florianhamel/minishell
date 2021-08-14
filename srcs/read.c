@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/08/12 16:03:54 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:20:28 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_read	*get_input(t_history **history, int *status)
 {
 	t_read		*data;
 
-	data = init_data(history);
+	data = init_read(history);
 	if (!data)
 	{
 		free_history(*history);

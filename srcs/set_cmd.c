@@ -6,11 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 13:08:39 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/12 13:09:48 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:36:06 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell2.h"
+#include "minishell.h"
 
 void	set_cmd(t_data *data, int *pos, t_cmd *cmd)
 {

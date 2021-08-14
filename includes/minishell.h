@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/12 13:27:23 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 15:34:59 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 # include <errno.h>
 # include <fcntl.h>
 
+/*
+** parsing
+*/
 # define NL_KEY 10
 # define RIGHT_KEY 4414235
 # define LEFT_KEY 4479771
@@ -36,6 +39,29 @@
 # define CTRL_D 4
 # define ERROR -1
 
+// exit flags
+# define NOT_CUSTOM 0
+# define CUSTOM 1
+
+// redirection flags
+# define SIMPLE_LEFT 1
+# define DOUBLE_LEFT 2
+# define SIMPLE_RIGHT 3
+# define DOUBLE_RIGHT 4
+
+// utils values
+# define NOT_FOUND -1
+
+typedef struct s_data
+{
+	char		**env;
+	int			status;
+	char		*str;
+	t_history	*history;
+	t_cmd		*cmd_lst;
+}		t_data;
+
+
 typedef struct s_history
 {
 	char				*cmd;
@@ -45,12 +71,44 @@ typedef struct s_history
 
 typedef struct s_read
 {
-	int					c;
-	size_t				pos;
-	size_t				len;
-	t_history			*current;
-	char				*str;
+	int			c;
+	size_t		pos;
+	size_t		len;
+	t_history	*current;
+	char		*str;
+	t_data		*data;
 }		t_read;
+
+typedef struct s_cmd
+{
+	char			*infile;
+	char			*outfile;
+	char			*cmd;
+	char			*options;
+	int				flag_in;
+	int				flag_out;
+	char			*word;
+	struct s_cmd	*prev;
+	struct s_cmd	*next;
+}		t_cmd;
+
+// cmd_checkers.c
+int		is_redir(int c);
+int		is_quote(int c);
+int		is_closed_quote();
+int		is_special_char(int c);
+
+// cmd_utils.c
+int		skip_ws(char *str);
+char	*add_char(char *str, int c);
+char	*concat_str(char *s1, char *s2);
+char	*get_file_cmd(t_data *data, int *pos);
+
+// cmd.c
+t_cmd	*new_elem_cmd(t_data *data);
+void	append_cmd(t_cmd **cmd_lst, t_cmd *cmd);
+t_cmd	*get_cmd_lst(t_data *data);
+void	execute_cmd(t_data *data);
 
 /*
 ** cursor_move.c
@@ -58,6 +116,10 @@ typedef struct s_read
 void		cursor_right(int iter);
 void		cursor_left(int iter);
 void		cursor_move(t_read *data);
+
+// free_exit_cmd.c
+void	free_data(t_data *data);
+void	exit_custom(t_data *data, char *serror, int flag);
 
 /*
 ** free_exit_parsing.c
@@ -105,10 +167,17 @@ t_history	*get_history(int max);
 void		intro(void);
 void		minishell(void);
 
+// quotes.c
+// Uniquement pour data->word (double redir limiter)
+char	*get_quote_word(t_data *data, int *pos);
+char	*get_simple_quote(t_data *data, int *pos);
+char	*get_double_quote(t_data *data, int *pos);
+char	*get_quote(t_data *data, int *pos);
+
 /*
 ** read_utils.c
 */
-t_read		*init_data(t_history **history);
+t_read		*init_read(t_history **history);
 void		abort_cmd(t_read *data, int *status);
 int			ft_getc(t_read *data);
 int			get_last_char(t_read *data);
@@ -120,6 +189,16 @@ void		eof_mgmt(t_read *data);
 void		key_mgmt(t_read *data);
 void		add_cmd(t_read *data, t_history **history);
 t_read		*get_input(t_history **history, int *status);
+
+// set_redir_utils.c
+int		get_flag_in(t_data *data, int *pos);
+int		get_flag_out(t_data *data, int *pos);
+char	*get_word(t_data *data, int *pos);
+
+
+// set_redir.c
+void	redir_syntax_error(t_data *data, int *pos, t_cmd *cmd);
+void	set_redir(t_data *data, int *pos, t_cmd *cmd);
 
 /*
 ** str_utils.c
@@ -143,5 +222,9 @@ char		**copy_env(void);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);
+
+// var.c
+char	*get_var_name(t_data *data, int *pos);
+char	*get_var_val(t_data *data, int *pos);
 
 #endif
