@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 11:50:28 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/13 20:06:21 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 03:01:40 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,24 @@ int		get_flag_out(t_data *data, int *pos, t_cmd *cmd)
 char	*get_infile(t_data *data, int *pos)
 {
 	char	*infile;
+	int		i;
 
-	*pos += skip_ws(data->str[*pos]);
-	if (data->str[*pos] == '$')
-		infile = get_var_val(data, ++(*pos));
-	if (is_quote(data->str[*pos]) && is_closed_quote((data, *pos)))
-		infile = get_quote_value(data, *pos);
+	*pos += skip_ws(&data->str[*pos]);
+	while (data->str[*pos])
+	{
+		// concat avec $ ou "" si jamais y'a XD
+		if (data->str[*pos] == '$')
+			infile = get_var_val(data, ++(*pos));
+		if (is_quote(data->str[*pos]) && is_closed_quote((data, *pos)))
+			infile = get_quote_value(data, *pos);
+	}
 }
 
 char	*get_outfile(t_data *data, int *pos)
 {
 	char	*outfile;
 
-	*pos += skip_ws(data->str[*pos]);
+	*pos += skip_ws(&data->str[*pos]);
 	if (data->str[*pos] == '$')
 		outfile = get_var_val(data, ++(*pos));
 	if (is_quote(data->str[*pos]) && is_closed_quote((data, *pos)))
@@ -58,5 +63,7 @@ char	*get_outfile(t_data *data, int *pos)
 
 char	*get_word(t_data *data, int *pos)
 {
-	
+	(*pos)++;
+	*pos += skip_ws(&data->str[*pos]);
+
 }

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/13 11:56:12 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/13 22:35:56 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	redir_mgmt(t_data *data, int *pos, t_cmd *cmd)
 		cmd->flag_in = get_flag_in(data, pos);
 		cmd->infile = get_infile(data, pos);
 		if (cmd->flag_in == DOUBLE_LEFT)
-			get_word();
+			cmd->word = get_word(data, pos);
 	}
 	else
 	{

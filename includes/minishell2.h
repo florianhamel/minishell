@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 13:01:35 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/13 11:52:16 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/14 03:03:36 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ void	free_data(t_data *data);
 void	exit_custom(t_data *data, char *serror, int flag);
 
 // quotes.c
-char	*get_quotation(t_data *data, int *pos);
+// Uniquement pour data->word (double redir limiter)
+char	*get_quote_no_var(t_data, int *pos);
+char	*get_quote_var(t_data *data, int *pos);
 
 // set_redir.c
 void	redir_syntax_error(t_data *data, int *pos, t_cmd *cmd);
