@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:51:42 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/14 15:34:14 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/16 16:27:40 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	is_quote(int c)
 		return (1);
 	return (0);
 }
-
 
 int		is_closed_quote(t_data *data, int *pos)
 {

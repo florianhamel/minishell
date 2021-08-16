@@ -6,15 +6,12 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/14 15:34:59 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/16 18:09:52 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-# include "libft.h"
-# include "gnl.h"
 
 # include <stdio.h>
 # include <unistd.h>
@@ -23,6 +20,9 @@
 # include <string.h>
 # include <errno.h>
 # include <fcntl.h>
+
+# include "libft.h"
+# include "gnl.h"
 
 /*
 ** parsing
@@ -52,16 +52,6 @@
 // utils values
 # define NOT_FOUND -1
 
-typedef struct s_data
-{
-	char		**env;
-	int			status;
-	char		*str;
-	t_history	*history;
-	t_cmd		*cmd_lst;
-}		t_data;
-
-
 typedef struct s_history
 {
 	char				*cmd;
@@ -71,12 +61,12 @@ typedef struct s_history
 
 typedef struct s_read
 {
-	int			c;
-	size_t		pos;
-	size_t		len;
-	t_history	*current;
-	char		*str;
-	t_data		*data;
+	int					c;
+	size_t				pos;
+	size_t				len;
+	struct s_history	*current;
+	char				*str;
+	struct s_data		*data;
 }		t_read;
 
 typedef struct s_cmd
@@ -92,23 +82,42 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }		t_cmd;
 
+typedef struct s_var
+{
+	char			*name;
+	char			*val;
+	struct s_var	*prev;
+	struct s_var	*next;
+}		t_var;
+
+typedef struct s_data
+{
+	char				**env;
+	char				*str;
+	int					status;
+	struct s_var		*var_lst;
+	struct s_cmd		*cmd_lst;
+	struct s_history	*history;
+}		t_data;
+
 // cmd_checkers.c
-int		is_redir(int c);
-int		is_quote(int c);
-int		is_closed_quote();
-int		is_special_char(int c);
+int			is_redir(int c);
+int			is_quote(int c);
+int			is_closed_quote();
+int			is_special_char(int c);
 
 // cmd_utils.c
-int		skip_ws(char *str);
-char	*add_char(char *str, int c);
-char	*concat_str(char *s1, char *s2);
-char	*get_file_cmd(t_data *data, int *pos);
+int			skip_ws(char *str);
+char		*add_char(char *str, int c);
+char		*concat_str(char *s1, char *s2);
+char		*get_file_cmd(t_data *data, int *pos);
 
 // cmd.c
-t_cmd	*new_elem_cmd(t_data *data);
-void	append_cmd(t_cmd **cmd_lst, t_cmd *cmd);
-t_cmd	*get_cmd_lst(t_data *data);
-void	execute_cmd(t_data *data);
+t_cmd		*new_elem_cmd(t_data *data);
+void		append_cmd(t_cmd **cmd_lst, t_cmd *cmd);
+t_cmd		*get_cmd_lst(t_data *data);
+void		free_cmd_lst(t_cmd *cmd);
+void		execute_cmd(t_data *data);
 
 /*
 ** cursor_move.c
@@ -118,8 +127,8 @@ void		cursor_left(int iter);
 void		cursor_move(t_read *data);
 
 // free_exit_cmd.c
-void	free_data(t_data *data);
-void	exit_custom(t_data *data, char *serror, int flag);
+void		free_data(t_data *data);
+void		exit_custom(t_data *data, char *serror, int flag);
 
 /*
 ** free_exit_parsing.c
@@ -168,11 +177,10 @@ void		intro(void);
 void		minishell(void);
 
 // quotes.c
-// Uniquement pour data->word (double redir limiter)
-char	*get_quote_word(t_data *data, int *pos);
-char	*get_simple_quote(t_data *data, int *pos);
-char	*get_double_quote(t_data *data, int *pos);
-char	*get_quote(t_data *data, int *pos);
+char		*get_quote_word(t_data *data, int *pos);
+char		*get_simple_quote(t_data *data, int *pos);
+char		*get_double_quote(t_data *data, int *pos);
+char		*get_quote(t_data *data, int *pos);
 
 /*
 ** read_utils.c
@@ -190,6 +198,9 @@ void		key_mgmt(t_read *data);
 void		add_cmd(t_read *data, t_history **history);
 t_read		*get_input(t_history **history, int *status);
 
+// set_cmd.c
+void		set_cmd(t_data *data, int *pos, t_cmd *cmd);
+
 // set_redir_utils.c
 int		get_flag_in(t_data *data, int *pos);
 int		get_flag_out(t_data *data, int *pos);
@@ -197,7 +208,7 @@ char	*get_word(t_data *data, int *pos);
 
 
 // set_redir.c
-void	redir_syntax_error(t_data *data, int *pos, t_cmd *cmd);
+void	redir_syntax_error(t_data *data, int *pos);
 void	set_redir(t_data *data, int *pos, t_cmd *cmd);
 
 /*
@@ -223,8 +234,15 @@ ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);
 
+// var_utils.c
+int			find_var_env(t_data *data, char *var_name);
+char		*search_env(t_data *data, char *var_name);
+int			find_var_var_lst(t_data *data, char *var_name);
+char		*search_var_lst(t_data *data, char *var_name);
+
 // var.c
-char	*get_var_name(t_data *data, int *pos);
-char	*get_var_val(t_data *data, int *pos);
+char		*get_var_name(t_data *data, int *pos);
+char		*get_var_val(t_data *data, char *var_name);
+char		*get_var(t_data *data, int *pos);
 
 #endif

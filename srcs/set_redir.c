@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/14 15:36:20 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/16 16:30:11 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redir_syntax_error(t_data *data, int *pos, t_cmd *cmd)
+void	redir_syntax_error(t_data *data, int *pos)
 {
 	char	*serror;
 	int		i;
@@ -28,7 +28,7 @@ void	redir_syntax_error(t_data *data, int *pos, t_cmd *cmd)
 
 void	set_redir(t_data *data, int *pos, t_cmd *cmd)
 {
-	redir_syntax_error(data, pos, cmd);
+	redir_syntax_error(data, pos);
 	if (data->str[*pos] == '<')
 	{
 		cmd->flag_in = get_flag_in(data, pos);

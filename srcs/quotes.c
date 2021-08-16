@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 13:13:27 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/14 15:35:56 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/16 16:27:25 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 char	*get_quote_word(t_data *data, int *pos)
 {
+	data = (t_data *)data;
+	pos = (int  *)pos;
 	return (NULL);
 }
 
@@ -56,6 +58,7 @@ char	*get_quote(t_data *data, int *pos)
 {
 	char	*quote;
 
+	(*pos)++;
 	if (data->str[*pos] == '\'')
 		quote = get_simple_quote(data, pos);
 	else

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:36:36 by user42            #+#    #+#             */
-/*   Updated: 2021/08/14 15:35:53 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/16 17:26:18 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ t_data	*init_data()
 	if (!data)
 		exit_strerror();
 	data->env = copy_env();
-	data->status = 0;
 	data->str = NULL;
-	data->history = get_history(20);
+	data->status = 0;
+	data->var_lst = NULL;
 	data->cmd_lst = NULL;
+	data->history = get_history(20);
 	return (data);
 }
 

@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/08/14 15:39:15 by fhamel           ###   ########.fr        #
+#    Updated: 2021/08/16 12:00:17 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,7 +90,7 @@ $(LIBFT) :
 	@make -C $(D_LIBFT)
 
 $(D_OBJS)%.o : $(D_SRCS)%.c
-	$(CC) $(FLAGS) -c $< -o $@ -Iincludes -Ilibft/includes/
+	$(CC) $(FLAGS) -c $< -o $@ -Iincludes -Ilibft/includes
 
 $(NAME) : compiling_start_m $(OBJS) compiling_end_m
 	@python -c 'print u"\033[0;33m\u2192 " + "Linking objects for \033[0;34m$(NAME)\033[0;33m... \033[0m"'

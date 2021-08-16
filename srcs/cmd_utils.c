@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 15:03:47 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/14 15:34:19 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/16 15:29:45 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,13 @@ char	*get_file_cmd(t_data *data, int *pos)
 
 	name = NULL;
 	*pos += skip_ws(&data->str[*pos]);
-	while (data->str[*pos] && !ft_is_ws(data->str[*pos]) && data->str[*pos] != "|")
+	while (data->str[*pos] && !ft_is_ws(data->str[*pos]) && \
+	data->str[*pos] != '|')
 	{
 		if (data->str[*pos] == '$')
-			name = concat_str(name, get_var_val(data, ++(*pos)));
-		else if (is_quote(data->str[*pos]) && is_closed_quote((data, *pos)))
-			name = concat_str(name, get_quote(data, ++(*pos)));
+			name = concat_str(name, get_var_val(data, pos));
+		else if (is_quote(data->str[*pos]) && is_closed_quote(data, pos))
+			name = concat_str(name, get_quote(data, pos));
 		else
 		{
 			add_char(name, data->str[*pos]);
