@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/08/20 03:03:02 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/20 15:46:42 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ t_read	*get_input(t_data *data)
 		else
 			key_mgmt(data_parsing);
 	}
+	printf("\n");
 	return (data_parsing);
 }
