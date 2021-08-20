@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:20:59 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/16 15:37:27 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/18 11:21:20 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ void	free_data(t_data *data)
 
 void	exit_custom(t_data *data, char *serror, int flag)
 {
+	int	status;
+
+	status = data->status;
 	free_history(data->history);
 	free_data(data);
 	if (flag == CUSTOM)
 	{
 		printf("%s\n", serror);
-		exit(data->status);
+		exit(status);
 	}
 	exit_strerror();
 }

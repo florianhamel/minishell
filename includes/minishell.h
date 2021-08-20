@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/16 18:09:52 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/20 02:57:48 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,33 @@
 # define LEFT_KEY 4479771
 # define UP_KEY 4283163
 # define DOWN_KEY 4348699
+# define PAGE_UP 4741915
+# define PAGE_DOWN 4610843
+# define DELETE 2117294875
+# define CTRL_DEL 23
+# define CTRL_S 19
 # define EXIT_KEY 3
 # define EOF_KEY -1
 # define DEL_KEY 127
 # define CTRL_C 3
 # define CTRL_D 4
-# define ERROR -1
 
 // exit flags
-# define NOT_CUSTOM 0
+# define AUTO 0
 # define CUSTOM 1
 
 // redirection flags
 # define SIMPLE_LEFT 1
 # define DOUBLE_LEFT 2
-# define SIMPLE_RIGHT 3
-# define DOUBLE_RIGHT 4
+# define SIMPLE_RIGHT 1
+# define DOUBLE_RIGHT 2
 
 // utils values
 # define NOT_FOUND -1
+# define ERROR -1
+# define SUCCESS 0
+# define REDIR 1
+# define PIPE 2
 
 typedef struct s_history
 {
@@ -73,11 +81,10 @@ typedef struct s_cmd
 {
 	char			*infile;
 	char			*outfile;
-	char			*cmd;
-	char			*options;
+	char			*args;
+	char			*word;
 	int				flag_in;
 	int				flag_out;
-	char			*word;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }		t_cmd;
@@ -103,21 +110,23 @@ typedef struct s_data
 // cmd_checkers.c
 int			is_redir(int c);
 int			is_quote(int c);
-int			is_closed_quote();
-int			is_special_char(int c);
+int			is_closed_quote(t_data *data, int *pos);
+int			is_end_arg(int c);
 
 // cmd_utils.c
 int			skip_ws(char *str);
-char		*add_char(char *str, int c);
-char		*concat_str(char *s1, char *s2);
-char		*get_file_cmd(t_data *data, int *pos);
+char		*add_char(t_data *data, char *str, int c);
+char		*concat_str(t_data *data, char *s1, char *s2);
 
 // cmd.c
+char		*get_arg(t_data *data, int *pos);
 t_cmd		*new_elem_cmd(t_data *data);
 void		append_cmd(t_cmd **cmd_lst, t_cmd *cmd);
-t_cmd		*get_cmd_lst(t_data *data);
 void		free_cmd_lst(t_cmd *cmd);
-void		execute_cmd(t_data *data);
+t_cmd		*get_cmd_lst(t_data *data);
+
+// debug tool
+void		print_cmd(t_data *data);
 
 /*
 ** cursor_move.c
@@ -185,7 +194,7 @@ char		*get_quote(t_data *data, int *pos);
 /*
 ** read_utils.c
 */
-t_read		*init_read(t_history **history);
+t_read		*init_read(t_data *data);
 void		abort_cmd(t_read *data, int *status);
 int			ft_getc(t_read *data);
 int			get_last_char(t_read *data);
@@ -196,20 +205,22 @@ int			get_last_char(t_read *data);
 void		eof_mgmt(t_read *data);
 void		key_mgmt(t_read *data);
 void		add_cmd(t_read *data, t_history **history);
-t_read		*get_input(t_history **history, int *status);
+t_read		*get_input(t_data *data);
 
-// set_cmd.c
-void		set_cmd(t_data *data, int *pos, t_cmd *cmd);
+// run.c
+void		run(t_data *data);
 
-// set_redir_utils.c
-int		get_flag_in(t_data *data, int *pos);
-int		get_flag_out(t_data *data, int *pos);
-char	*get_word(t_data *data, int *pos);
+// set_utils.c
+int			get_flag_in(t_data *data, int *pos);
+int			get_flag_out(t_data *data, int *pos);
+char		*get_word(t_data *data, int *pos);
 
 
-// set_redir.c
-void	redir_syntax_error(t_data *data, int *pos);
-void	set_redir(t_data *data, int *pos, t_cmd *cmd);
+// set.c
+int			syntax_error(t_data *data, int flag);
+int			check_syntax_error(t_data *data);
+void		set_redir(t_data *data, int *pos, t_cmd *cmd);
+void		set_args(t_data *data, int *pos, t_cmd *cmd);
 
 /*
 ** str_utils.c
@@ -228,7 +239,6 @@ void		str_mgmt(t_read *data);
 /*
 ** utils_parsing.c
 */
-
 char		**copy_env(void);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
@@ -237,7 +247,6 @@ char		*new_alloc(char *str, size_t size, size_t pos);
 // var_utils.c
 int			find_var_env(t_data *data, char *var_name);
 char		*search_env(t_data *data, char *var_name);
-int			find_var_var_lst(t_data *data, char *var_name);
 char		*search_var_lst(t_data *data, char *var_name);
 
 // var.c

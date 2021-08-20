@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 15:03:47 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/16 15:29:45 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/18 21:08:51 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	skip_ws(char *str)
 	return (i);
 }
 
-char	*add_char(char *str, int c)
+char	*add_char(t_data *data, char *str, int c)
 {
 	char	*new_str;
 	int		len_str;
@@ -31,9 +31,9 @@ char	*add_char(char *str, int c)
 	len_str = ft_strlen(str);
 	new_str = malloc(len_str + 2);
 	if (!new_str)
-		return (NULL);
+		exit_custom(data, NULL, AUTO);
 	i = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		new_str[i] = str[i];
 		i++;
@@ -44,7 +44,7 @@ char	*add_char(char *str, int c)
 	return (new_str);
 }
 
-char	*concat_str(char *s1, char *s2)
+char	*concat_str(t_data *data, char *s1, char *s2)
 {
 	char	*new_str;
 	int		i;
@@ -54,41 +54,20 @@ char	*concat_str(char *s1, char *s2)
 	i = 0;
 	j = 0;
 	if (!new_str)
-		return (NULL);
-	while (s1[i])
+		exit_custom(data, NULL, AUTO);
+	while (s1 && s1[i])
 	{
 		new_str[i] = s1[i];
 		i++;
 	}
-	while (s2[j])
+	while (s2 && s2[j])
 	{
 		new_str[i] = s2[j];
 		i++;
 		j++;
 	}
+	new_str[i] = '\0';
 	free_null((void **)&s1);
 	free_null((void **)&s2);
 	return (new_str);
-}
-
-char	*get_file_cmd(t_data *data, int *pos)
-{
-	char	*name;
-
-	name = NULL;
-	*pos += skip_ws(&data->str[*pos]);
-	while (data->str[*pos] && !ft_is_ws(data->str[*pos]) && \
-	data->str[*pos] != '|')
-	{
-		if (data->str[*pos] == '$')
-			name = concat_str(name, get_var_val(data, pos));
-		else if (is_quote(data->str[*pos]) && is_closed_quote(data, pos))
-			name = concat_str(name, get_quote(data, pos));
-		else
-		{
-			add_char(name, data->str[*pos]);
-			(*pos)++;
-		}
-	}
-	return (name);
 }

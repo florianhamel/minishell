@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 13:11:08 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/16 18:08:08 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/18 16:15:09 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ char	*get_var_name(t_data *data, int *pos)
 	(ft_isalnum(data->str[*pos]) || data->str[*pos] == '_') &&\
 	!ft_is_ws(data->str[*pos]))
 	{
-		var_name = add_char(var_name, data->str[*pos]);
-		if (!var_name)
-			exit_custom(data, NULL, NOT_CUSTOM);
+		var_name = add_char(data, var_name, data->str[*pos]);
 		(*pos)++;
 	}
 	return (var_name);
@@ -51,7 +49,7 @@ char	*get_var(t_data *data, int *pos)
 	{
 		var_val = malloc(2);
 		if (!var_val)
-			exit_custom(data, NULL, NOT_CUSTOM);
+			exit_custom(data, NULL, AUTO);
 		var_val[0] = '$';
 		var_val[1] = '\0';
 	}

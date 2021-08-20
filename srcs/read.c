@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/08/14 15:20:28 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/20 03:03:02 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ void	eof_mgmt(t_read *data)
 	}
 }
 
+int		is_valid_input(int c)
+{
+	if (32 <= c && c <= 127)
+		return (1);
+	return (0);
+}
+
 void	key_mgmt(t_read *data)
 {
 	if (data->c == CTRL_D)
@@ -30,7 +37,7 @@ void	key_mgmt(t_read *data)
 		cursor_move(data);
 	else if (data->c == UP_KEY || data->c == DOWN_KEY)
 		history_navigation(data);
-	else
+	else if (32 <= data->c && data->c <= 127)
 		str_mgmt(data);
 }
 
@@ -51,30 +58,29 @@ void	add_cmd(t_read *data, t_history **history)
 	}
 }
 
-t_read	*get_input(t_history **history, int *status)
+t_read	*get_input(t_data *data)
 {
-	t_read		*data;
+	t_read		*data_parsing;
 
-	data = init_read(history);
-	if (!data)
+	data_parsing = init_read(data);
+	if (!data_parsing)
 	{
-		free_history(*history);
+		free_history(data->history);
 		exit_strerror();
 	}
 	while (1)
 	{
-		data->c = get_last_char(data);
-		if (data->c == NL_KEY || data->c == CTRL_C)
+		data_parsing->c = get_last_char(data_parsing);
+		if (data_parsing->c == NL_KEY || data_parsing->c == CTRL_C)
 		{
-			if (data->c == CTRL_C)
-				abort_cmd(data, status);
-			else if (data->c == NL_KEY)
-				add_cmd(data, history);
+			if (data_parsing->c == CTRL_C)
+				abort_cmd(data_parsing, &(data->status));
+			else if (data_parsing->c == NL_KEY)
+				add_cmd(data_parsing, &(data->history));
 			break ;
 		}
 		else
-			key_mgmt(data);
+			key_mgmt(data_parsing);
 	}
-	printf("\nprintf : %s\n", data->str);
-	return (data);
+	return (data_parsing);
 }

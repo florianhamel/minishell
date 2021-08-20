@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/08/16 12:00:17 by fhamel           ###   ########.fr        #
+#    Updated: 2021/08/19 19:23:05 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,12 +37,13 @@ _SRC_		=	cmd_checkers.c \
 				quotes.c \
 				read_utils.c \
 				read.c \
-				set_cmd.c \
-				set_redir_utils.c \
-				set_redir.c \
+				run.c \
+				set_utils.c \
+				set.c \
 				str_utils.c \
 				str.c \
 				utils_parsing.c \
+				var_utils.c \
 				var.c \
 
 SRCS		=	$(addprefix $(D_SRCS), $(_SRC_))
@@ -94,7 +95,7 @@ $(D_OBJS)%.o : $(D_SRCS)%.c
 
 $(NAME) : compiling_start_m $(OBJS) compiling_end_m
 	@python -c 'print u"\033[0;33m\u2192 " + "Linking objects for \033[0;34m$(NAME)\033[0;33m... \033[0m"'
-	@$(CC) $(OBJS) -L$(D_LIBFT) -lft -o $(NAME)
+	@$(CC) $(FSANITIZE) $(OBJS) -L$(D_LIBFT) -lft -o $(NAME)
 	@python -c 'print u"\033[0;32mLinking successful \u2713 \033[0m"'
 
 clean :

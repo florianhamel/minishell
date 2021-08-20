@@ -6,28 +6,29 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:15:53 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/14 15:20:00 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/20 01:16:15 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_read	*init_read(t_history **history)
+t_read	*init_read(t_data *data)
 {
-	t_read		*data;
+	t_read	*data_parsing;
 
-	data = malloc(sizeof(t_read));
-	if (!data)
+	data_parsing = malloc(sizeof(t_read));
+	if (!data_parsing)
 	{
-		free_history(*history);
+		free_history(data->history);
 		exit_strerror();
 	}
-	data->c = 0;
-	data->pos = 0;
-	data->len = 0;
-	data->current = *history;
-	data->str = NULL;
-	return (data);
+	data_parsing->c = 0;
+	data_parsing->pos = 0;
+	data_parsing->len = 0;
+	data_parsing->current = data->history;
+	data_parsing->str = NULL;
+	data_parsing->data = data;
+	return (data_parsing);
 }
 
 void	abort_cmd(t_read *data, int *status)

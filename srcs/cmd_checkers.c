@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:51:42 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/16 16:27:40 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/19 13:40:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int		is_closed_quote(t_data *data, int *pos)
 	return (0);
 }
 
-int	is_special_char(int c)
+int	is_end_arg(int c)
 {
-	if (is_redir(c) || is_quote(c) || c == '|' || c == '$')
+	if (c && !ft_is_ws(c) && !is_redir(c) && c != '|')
 		return (1);
 	return (0);
 }
