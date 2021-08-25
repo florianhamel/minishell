@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:56:07 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/19 20:30:29 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/24 16:35:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,9 @@ t_cmd	*new_elem_cmd(t_data *data)
 	elem = malloc(sizeof(t_cmd));
 	if (!elem)
 		exit_custom(data, NULL, AUTO);
-	elem->infile = NULL;
-	elem->outfile = NULL;
+	elem->in_lst = NULL;
+	elem->out_lst = NULL;
 	elem->args = NULL;
-	elem->word = NULL;
-	elem->flag_in = 0;
-	elem->flag_out = 0;
 	elem->prev = NULL;
 	elem->next = NULL;
 	return (elem);
@@ -73,10 +70,12 @@ void	append_cmd (t_cmd **cmd_lst, t_cmd *cmd)
 	cmd->prev = current;
 }
 
-void	free_cmd_lst(t_cmd *cmd)
+void	free_cmd_lst(t_data *data)
 {
+	t_cmd	*cmd;
 	t_cmd	*next;
 
+	cmd = data->cmd_lst;
 	if (!cmd)
 		return ;
 	while (cmd->prev)
@@ -84,16 +83,35 @@ void	free_cmd_lst(t_cmd *cmd)
 	while (cmd)
 	{
 		next = cmd->next;
-		free_null((void **)&(cmd->infile));
-		free_null((void **)&(cmd->outfile));
+		free_redir_lst(cmd->in_lst);
+		cmd->in_lst = NULL;
+		free_redir_lst(cmd->out_lst);
+		cmd->out_lst = NULL;
 		free_null((void **)&(cmd->args));
-		free_null((void **)&(cmd->word));
 		free_null((void **)&cmd);
 		cmd = next;
 	}
+	data->cmd_lst = NULL;
 }
 
 // fonction de test
+
+void	print_redir_lst(t_redir *redir)
+{
+	if (!redir)
+	{
+		printf("%p$\n", redir);
+		return ;
+	}
+	while (redir)
+	{
+		printf("flag: %d$\n", redir->flag);
+		printf("word: %s$\n", redir->word);
+		printf("\n");
+		redir = redir->next;
+	}
+}
+
 void	print_cmd(t_data *data)
 {
 	t_cmd	*current;
@@ -102,14 +120,13 @@ void	print_cmd(t_data *data)
 	while (current)
 	{
 		printf("----------ELEM----------\n");
-		printf("infile: %s\n", current->infile);
-		printf("outfile: %s\n", current->outfile);
-		printf("arg: %s\n", current->args);
-		printf("word: %s\n", current->word);
-		printf("flag_in: %d\n", current->flag_in);
-		printf("flag_out: %d\n", current->flag_out);
-		printf("prev: %p\n", current->prev);
-		printf("next: %p\n", current->next);
+		printf("***** in_lst ******\n");
+		print_redir_lst(current->in_lst);
+		printf("***** out_lst ******\n");
+		print_redir_lst(current->out_lst);
+		printf("arg: %s$\n", current->args);
+		printf("prev: %p$\n", current->prev);
+		printf("next: %p$\n", current->next);
 		current = current->next;
 	}
 
@@ -122,13 +139,14 @@ t_cmd	*get_cmd_lst(t_data *data)
 	int		i;
 
 	cmd_lst = NULL;
-	i = skip_ws(&(data->str[0]));
+	i = 0;
 	while (data->str[i])
 	{
 		cmd = new_elem_cmd(data);
 		append_cmd(&cmd_lst, cmd);
 		while (data->str[i] && data->str[i] != '|')
 		{
+			i += skip_ws(&data->str[i]);
 			if (is_redir(data->str[i]))
 				set_redir(data, &i, cmd);
 			else

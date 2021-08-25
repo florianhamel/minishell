@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/20 02:57:48 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/24 16:03:19 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,6 @@ typedef struct s_read
 	struct s_data		*data;
 }		t_read;
 
-typedef struct s_cmd
-{
-	char			*infile;
-	char			*outfile;
-	char			*args;
-	char			*word;
-	int				flag_in;
-	int				flag_out;
-	struct s_cmd	*prev;
-	struct s_cmd	*next;
-}		t_cmd;
-
 typedef struct s_var
 {
 	char			*name;
@@ -96,6 +84,23 @@ typedef struct s_var
 	struct s_var	*prev;
 	struct s_var	*next;
 }		t_var;
+
+typedef struct s_redir
+{
+	char			*word;
+	int				flag;
+	struct s_redir	*prev;
+	struct s_redir	*next;
+}		t_redir;
+
+typedef struct s_cmd
+{
+	struct s_redir	*in_lst;
+	struct s_redir	*out_lst;
+	char			*args;
+	struct s_cmd	*prev;
+	struct s_cmd	*next;
+}		t_cmd;
 
 typedef struct s_data
 {
@@ -122,7 +127,7 @@ char		*concat_str(t_data *data, char *s1, char *s2);
 char		*get_arg(t_data *data, int *pos);
 t_cmd		*new_elem_cmd(t_data *data);
 void		append_cmd(t_cmd **cmd_lst, t_cmd *cmd);
-void		free_cmd_lst(t_cmd *cmd);
+void		free_cmd_lst(t_data *data);
 t_cmd		*get_cmd_lst(t_data *data);
 
 // debug tool
@@ -211,14 +216,17 @@ t_read		*get_input(t_data *data);
 void		run(t_data *data);
 
 // set_utils.c
+char		*get_word(t_data *data, int *pos);
 int			get_flag_in(t_data *data, int *pos);
 int			get_flag_out(t_data *data, int *pos);
-char		*get_word(t_data *data, int *pos);
+void		set_redir_in(t_data *data, int *pos, t_cmd *cmd);
+void		set_redir_out(t_data *data, int *pos, t_cmd *cmd);
 
 
 // set.c
 int			syntax_error(t_data *data, int flag);
 int			check_syntax_error(t_data *data);
+void		free_redir_lst(t_redir *redir);
 void		set_redir(t_data *data, int *pos, t_cmd *cmd);
 void		set_args(t_data *data, int *pos, t_cmd *cmd);
 

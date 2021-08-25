@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 11:50:28 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/19 19:22:18 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/24 16:22:40 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,55 @@ char	*get_word(t_data *data, int *pos)
 			word = add_char(data, word, data->str[(*pos)++]);
 	}	
 	return (word);
+}
+
+void	set_redir_in(t_data *data, int *pos, t_cmd *cmd)
+{
+	t_redir	*current;
+	t_redir	*redir;
+
+	current = cmd->in_lst;
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		exit_custom(data, NULL, AUTO);
+	redir->prev = NULL;
+	redir->next = NULL;
+	redir->flag = get_flag_in(data, pos);
+	if (redir->flag == DOUBLE_LEFT)
+		redir->word = get_word(data, pos);
+	else
+		redir->word = get_arg(data, pos);
+	if (!cmd->in_lst)
+		cmd->in_lst = redir;
+	else
+	{
+		while (current->next)
+			current = current->next;
+		redir->prev = current;
+		current->next = redir;
+	}
+}
+
+void	set_redir_out(t_data *data, int *pos, t_cmd *cmd)
+{
+	t_redir	*current;
+	t_redir	*redir;
+
+	current = cmd->out_lst;
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		exit_custom(data, NULL, AUTO);
+	redir->prev = NULL;
+	redir->next = NULL;
+	redir->flag = get_flag_out(data, pos);
+	redir->word = get_arg(data, pos);
+	if (!cmd->out_lst)
+		cmd->out_lst = redir;
+	else
+	{
+		while (current->next)
+			current = current->next;
+		redir->prev = current;
+		current->next = redir;
+	}
 }

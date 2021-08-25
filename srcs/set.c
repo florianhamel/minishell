@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/19 20:29:55 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/24 16:21:14 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,29 @@ int	check_syntax_error(t_data *data)
 	return (SUCCESS);
 }
 
+void	free_redir_lst(t_redir *redir)
+{
+	t_redir	*next;
+
+	if (!redir)
+		return ;
+	while (redir->prev)
+		redir = redir->prev;
+	while (redir)
+	{
+		next = redir->next;
+		free_null((void **)&redir->word);
+		free_null((void **)&redir);
+		redir = next;
+	}
+}
+
 void	set_redir(t_data *data, int *pos, t_cmd *cmd)
 {
 	if (data->str[*pos] == '<')
-	{
-		cmd->flag_in = get_flag_in(data, pos);
-		if (cmd->flag_in == DOUBLE_LEFT)
-			cmd->word = get_word(data, pos);
-		else
-			cmd->infile = get_arg(data, pos);
-	}
+		set_redir_in(data, pos, cmd);
 	else
-	{
-		cmd->flag_out = get_flag_out(data, pos);
-		cmd->outfile = get_arg(data, pos);
-	}
+		set_redir_out(data, pos, cmd);
 }
 
 void	set_args(t_data *data, int *pos, t_cmd *cmd)
