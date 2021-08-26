@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/24 16:03:19 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/26 02:26:01 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <string.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 # include "libft.h"
 # include "gnl.h"
@@ -54,9 +57,11 @@
 # define DOUBLE_RIGHT 2
 
 // utils values
+# define NO_FD -2
 # define NOT_FOUND -1
 # define ERROR -1
 # define SUCCESS 0
+# define CHILD 0
 # define REDIR 1
 # define PIPE 2
 
@@ -111,6 +116,19 @@ typedef struct s_data
 	struct s_cmd		*cmd_lst;
 	struct s_history	*history;
 }		t_data;
+
+typedef	struct s_run
+{
+	int	fd[2];
+	int	fd_pipe;
+	int	fd_in;
+	int	fd_out;
+	int	pid;
+	int status;
+}		t_run;
+
+// bin.c
+char		**get_argv(t_data *data, t_cmd *cmd);
 
 // cmd_checkers.c
 int			is_redir(int c);
@@ -213,6 +231,10 @@ void		add_cmd(t_read *data, t_history **history);
 t_read		*get_input(t_data *data);
 
 // run.c
+void		dup2_close(int new_fd, int old_fd);
+void		call_built_in(t_data *data, t_cmd *cmd);
+void		call_execve(t_data *data, t_cmd *cmd);
+void		call(t_data *data, t_cmd *cmd, t_run run);
 void		run(t_data *data);
 
 // set_utils.c
