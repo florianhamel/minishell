@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/08/21 00:37:43 by fhamel           ###   ########.fr        #
+#    Updated: 2021/08/30 02:53:33 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ D_OBJS		=	objs/
 
 D_SRCS		=	srcs/
 
-_SRC_		=	cmd_checkers.c \
+_SRC_		=	bin.c \
+				cmd_checkers.c \
 				cmd_utils.c \
 				cmd.c \
 				cursor_move.c \
@@ -34,9 +35,11 @@ _SRC_		=	cmd_checkers.c \
 				history_utils2.c \
 				history.c \
 				main.c \
+				open.c \
 				quotes.c \
 				read_utils.c \
 				read.c \
+				run_utils.c \
 				run.c \
 				set_utils.c \
 				set.c \

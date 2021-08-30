@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/26 02:26:01 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/30 02:54:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,10 @@ t_history	*get_history(int max);
 void		intro(void);
 void		minishell(void);
 
+// open.c
+int			get_infile(t_data *data, t_cmd *cmd);
+int			get_outfile(t_data *data, t_cmd *cmd);
+
 // quotes.c
 char		*get_quote_word(t_data *data, int *pos);
 char		*get_simple_quote(t_data *data, int *pos);
@@ -230,8 +234,11 @@ void		key_mgmt(t_read *data);
 void		add_cmd(t_read *data, t_history **history);
 t_read		*get_input(t_data *data);
 
-// run.c
+// run_utils.c
 void		dup2_close(int new_fd, int old_fd);
+int			is_built_in(t_data *data, t_cmd *cmd);
+
+// run.c
 void		call_built_in(t_data *data, t_cmd *cmd);
 void		call_execve(t_data *data, t_cmd *cmd);
 void		call(t_data *data, t_cmd *cmd, t_run run);

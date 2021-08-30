@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:20:59 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/24 16:34:08 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/30 02:06:45 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,16 @@ void	free_data(t_data *data)
 	free_null((void **)&data);
 }
 
-void	exit_custom(t_data *data, char *serror, int flag)
+char	*custom_strerror(int status)
+{
+	if (status == 0)
+		return ("Success");
+	else if (status == 1)
+		return ("No such file or directory");
+	return (NULL);
+}
+
+void	exit_custom(t_data *data, char *word, int flag)
 {
 	int	status;
 
@@ -29,7 +38,10 @@ void	exit_custom(t_data *data, char *serror, int flag)
 	free_data(data);
 	if (flag == CUSTOM)
 	{
-		printf("%s\n", serror);
+		printf("minishell: ");
+		if (word)
+			printf("%s", word);
+		printf("%s\n", custom_strerror(data->status));
 		exit(status);
 	}
 	exit_strerror();
