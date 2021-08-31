@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:36:36 by user42            #+#    #+#             */
-/*   Updated: 2021/08/31 02:31:17 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/31 14:48:15 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ t_data	*init_data()
 	data = malloc(sizeof(t_data));
 	if (!data)
 		exit_strerror();
-	data->env = copy_env();
+	data->env = copy_env(data);
 	data->str = NULL;
 	data->status = 0;
-	data->var_lst = NULL;
+	data->var_lst = init_var_lst(data);
 	data->cmd_lst = NULL;
 	data->history = get_history(20);
 	return (data);
@@ -47,6 +47,8 @@ void	minishell(void)
 		free_null((void **)&data_parsing);
 		if (data->str)
 			run(data);
+		free_null((void **)&data->var_lst->val);
+		data->var_lst->val = ft_itoa(data->status);
 	}
 }
 

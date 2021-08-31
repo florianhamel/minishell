@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 18:03:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/12 13:32:15 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/31 17:17:12 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**copy_env(void)
+char	**copy_env(t_data *data)
 {
 	char	**env;
 	int		i;
@@ -22,7 +22,10 @@ char	**copy_env(void)
 		i++;
 	env = malloc(sizeof(char *) * (i + 1));
 	if (!env)
+	{
+		free_null((void **)&data);
 		exit_strerror();
+	}
 	i = 0;
 	while (__environ[i])
 	{
@@ -31,6 +34,31 @@ char	**copy_env(void)
 	}
 	env[i] = NULL;
 	return (env);
+}
+
+t_var	*init_var_lst(t_data *data)
+{
+	t_var	*var;
+
+	var = malloc(sizeof(t_var));
+	if (!var)
+	{
+		ft_free_arr(data->env);
+		exit_strerror();
+	}
+	var->prev = NULL;
+	var->next = NULL;
+	var->name = malloc(2);
+	if (!var->name)
+	{
+		ft_free_arr(data->env);
+		free_null((void **)&data);
+		exit_strerror();
+	}
+	var->name[0] = '?';
+	var->name[1] = '\0';
+	var->val = ft_itoa(0);
+	return (var);
 }
 
 ssize_t	ft_write(int fd, const void *buf, size_t nbyte)

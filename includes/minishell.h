@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/30 05:37:08 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/31 14:43:43 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void		cursor_left(int iter);
 void		cursor_move(t_read *data);
 
 // free_exit_cmd.c
+void		free_var_lst(t_var *var_lst);
 void		free_data(t_data *data);
 char		*custom_sterror(int status);
 void		exit_custom(t_data *data, char *serror, int flag);
@@ -281,7 +282,8 @@ void		str_mgmt(t_read *data);
 /*
 ** utils_parsing.c
 */
-char		**copy_env(void);
+char		**copy_env(t_data *data);
+t_var		*init_var_lst(t_data *data);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);

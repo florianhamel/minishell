@@ -6,15 +6,32 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:20:59 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/31 02:19:55 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/31 14:44:02 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	free_var_lst(t_var *var_lst)
+{
+	t_var	*current;
+	t_var	*next;
+
+	current = var_lst;
+	while (current)
+	{
+		next = current->next;
+		free_null((void **)&current->name);
+		free_null((void **)&current->val);
+		free_null((void **)&current);
+		current = next;
+	}
+}
+
 void	free_data(t_data *data)
 {
 	ft_free_arr(data->env);
+	free_var_lst(data->var_lst);
 	free_cmd_lst(data);
 	free_null((void **)&(data->str));
 	free_null((void **)&data);
