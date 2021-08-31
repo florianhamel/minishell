@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 14:05:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/09 16:27:16 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/31 22:07:13 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_nb_lines(void)
 
 	line = NULL;
 	nb = 0;
-	fd = open("documents/.minishell_history", O_RDONLY | O_CREAT, 0666);
+	fd = open("./.minishell_history", O_RDONLY | O_CREAT, 0666);
 	if (fd == ERROR)
 		exit_strerror();
 	ret = get_next_line(fd, &line);
@@ -46,7 +46,7 @@ int	go_to_line(int nb_lines, int max)
 	int		ret;
 	int		count;
 
-	fd = open("documents/.minishell_history", O_RDONLY, 0666);
+	fd = open("./.minishell_history", O_RDONLY, 0666);
 	if (fd == ERROR)
 		exit_strerror();
 	line = NULL;
