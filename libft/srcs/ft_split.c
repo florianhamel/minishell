@@ -1,113 +1,110 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_tmp.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/18 11:52:53 by fhamel            #+#    #+#             */
-/*   Updated: 2021/07/10 19:08:28 by fhamel           ###   ########.fr       */
+/*   Created: 2021/08/30 17:40:54 by fhamel            #+#    #+#             */
+/*   Updated: 2021/08/31 02:00:00 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-int	nb_words(char const *s, char c)
+int	get_nb_words(const char *str, char sep)
 {
 	int	nb_words;
 	int	i;
 
 	nb_words = 0;
 	i = 0;
-	while (s[i] && s[i] == c)
-		i++;
-	while (s[i])
+	while (str[i])
 	{
-		nb_words++;
-		while (s[i] && s[i] != c)
+		while (str[i] == sep)
 			i++;
-		while (s[i] && s[i] == c)
+		if (str[i])
+			nb_words++;
+		while (str[i] && str[i] != sep)
 			i++;
 	}
 	return (nb_words);
 }
 
-int	len_word(const char *s, char c)
+int	get_len_word(const char *str, char sep)
 {
 	int	i;
 
 	i = 0;
-	while (s[i] && s[i] != c)
+	while (str[i] && str[i] != sep)
 		i++;
 	return (i);
 }
 
-void	free_arr(char **arr, int nb_words)
+int	alloc_words(char **arr_words, const char *str, char sep)
 {
-	int	i;
-
-	i = 0;
-	while (i < nb_words)
-	{
-		free(arr[i]);
-		arr[i] = NULL;
-		i++;
-	}
-	free(arr);
-}
-
-char	**arr_alloc(const char *s, char c)
-{
-	char	**arr;
 	int		index;
 	int		i;
 
-	arr = ft_malloc(sizeof(char *), nb_words(s, c) + 1);
-	if (!arr)
-		return (NULL);
 	index = 0;
 	i = 0;
-	while (s[index])
+	while (str[i])
 	{
-		while (s[index] == c)
-			index++;
-		arr[i] = (char *)ft_calloc(len_word(&s[index], c) + 1, sizeof(char));
-		if (!arr[i])
+		while (str[i] == sep)
+			i++;
+		if (str[i])
 		{
-			free_arr(arr, i);
-			return (NULL);
+			arr_words[index] = malloc(get_len_word(&str[i], sep) + 1);
+			if (!arr_words[index])
+			{
+				arr_words[index] = NULL;
+				ft_free_arr(arr_words);
+				return (-1);
+			}
+			index++;
+			while (str[i] && str[i] != sep)
+				i++;
 		}
-		index += len_word(&s[index], c);
-		i++;
 	}
-	return (arr);
+	return (0);
 }
 
-char	**ft_split(const char *s, char c)
+void	fill_words(char **arr_words, const char *str, char sep)
 {
-	char	**arr;
-	int		index;
-	int		i;
-	int		j;
+	int	index;
+	int	i;
+	int	j;
 
-	if (!s)
-		return (NULL);
-	arr = arr_alloc(s, c);
-	if (!arr)
-		return (NULL);
 	index = 0;
 	i = 0;
-	while (s[index])
+	while (str[i])
 	{
-		while (s[index] == c)
+		while (str[i] == sep)
+			i++;
+		if (str[i])
+		{
+			j = 0;
+			while (str[i] && str[i] != sep)
+				arr_words[index][j++] = str[i++];
+			arr_words[index][j] = '\0';
 			index++;
-		if (!s[index])
-			break ;
-		j = 0;
-		while (s[index] && s[index] != c)
-			arr[i][j++] = s[index++];
-		arr[i++][j] = '\0';
+		}
 	}
-	arr[i] = NULL;
-	return (arr);
+	arr_words[index] = NULL;
+}
+
+char	**ft_split(const char *str, char sep)
+{
+	char	**arr_words;
+
+	if (!str)
+		return (NULL);
+	arr_words = malloc(sizeof(char *) * (get_nb_words(str, sep) + 1));
+	if (!arr_words)
+		return (NULL);
+	if (alloc_words(arr_words, str, sep) == -1)
+		return (NULL);
+	fill_words(arr_words, str, sep);
+	return (arr_words);
 }

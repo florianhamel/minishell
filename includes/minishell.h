@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/30 02:54:05 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/30 05:37:08 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,10 @@ typedef	struct s_run
 }		t_run;
 
 // bin.c
+char		*concat_path_bin(t_data *data, char *s1, char *s2);
+char		*get_path_bin(t_data *data, char *name, char *var_path);
+char		*get_var_path(t_data *data);
+char		*get_bin(t_data *data, char *name);
 char		**get_argv(t_data *data, t_cmd *cmd);
 
 // cmd_checkers.c
@@ -160,6 +164,7 @@ void		cursor_move(t_read *data);
 
 // free_exit_cmd.c
 void		free_data(t_data *data);
+char		*custom_sterror(int status);
 void		exit_custom(t_data *data, char *serror, int flag);
 
 /*

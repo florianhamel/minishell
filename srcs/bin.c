@@ -6,33 +6,33 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 15:58:45 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/30 01:59:16 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/30 20:44:55 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*concat_path_bin(t_data *data, char *s1, char *s2)
+char	*concat_path_bin(t_data *data, char *path, char *bin)
 {
 	char	*path_bin;
 	int		i;
 	int		j;
 
-	path_bin = malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
+	path_bin = malloc(ft_strlen(path) + ft_strlen(bin) + 2);
 	i = 0;
 	j = 0;
 	if (!path_bin)
 		exit_custom(data, NULL, AUTO);
-	while (s1 && s1[i])
+	while (path && path[i])
 	{
-		path_bin[i] = s1[i];
+		path_bin[i] = path[i];
 		i++;
 	}
 	path_bin[i] = '/';
 	i++;
-	while (s2 && s2[j])
+	while (bin && bin[j])
 	{
-		path_bin[i] = s2[j];
+		path_bin[i] = bin[j];
 		i++;
 		j++;
 	}
@@ -60,6 +60,7 @@ char	*get_path_bin(t_data *data, char *name, char *var_path)
 			ft_free_arr(arr_path);
 			return (path_bin);
 		}
+		free_null((void **)&path_bin);
 		i++;
 	}
 	ft_free_arr(arr_path);
@@ -86,7 +87,6 @@ char	*get_var_path(t_data *data)
 		ft_free_arr(arr);
 		i++;
 	}
-
 	return (NULL);
 }
 
@@ -103,15 +103,26 @@ char	*get_bin(t_data *data, char *name)
 	return (path_bin);	
 }
 
+void	print_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		printf("arr i: |%s|\n", arr[i]);
+		i++;
+	}
+}
+
 char	**get_argv(t_data *data, t_cmd *cmd)
 {
 	char		**argv;
 	char		*bin;
+	char		*word;
 	struct stat	statbuf;
 
 	argv = NULL;
-	if (!cmd->args)
-		return (argv);
 	if (cmd->args)
 	{
 		argv = ft_split(cmd->args, ' ');
@@ -121,6 +132,13 @@ char	**get_argv(t_data *data, t_cmd *cmd)
 	if (stat(argv[0], &statbuf) == SUCCESS)
 		return (argv);
 	bin = get_bin(data, argv[0]);
+	if (!bin)
+	{
+		word = ft_strdup(argv[0]);
+		ft_free_arr(argv);
+		data->status = 127;
+		exit_custom(data, word, CUSTOM);
+	}
 	free_null((void **)&argv[0]);
 	argv[0] = bin;
 	return (argv);

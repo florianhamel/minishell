@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 22:22:20 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/30 02:51:39 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/30 05:31:57 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	get_infile(t_data *data, t_cmd *cmd)
 			fd = open(current->word, O_RDONLY);
 		if (fd == ERROR)
 		{
-			data->status = 2;
-			exit_custom(data, current->word, CUSTOM);
+			data->status = 1;
+			exit_custom(data, ft_strdup(current->word), CUSTOM);
 		}
 		current = current->next;
 	}

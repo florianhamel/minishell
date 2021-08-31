@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/30 02:54:17 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/08/31 02:18:16 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,8 @@ void	call_execve(t_data *data, t_cmd *cmd)
 
 	argv = get_argv(data, cmd);
 	if (argv)
-	{
 		if (execve(argv[0], argv, data->env) == ERROR)
 			exit_custom(data, NULL, AUTO);
-	}
-	else
-	{
-		free_history(data->history);
-		free_data(data);
-		exit(0);
-	}
 }
 
 void	call(t_data *data, t_cmd *cmd, t_run run)
@@ -60,6 +52,12 @@ void	call(t_data *data, t_cmd *cmd, t_run run)
 		dup2_close(run.fd_in, 0);
 	if (run.fd_out != NO_FD)
 		dup2_close(run.fd_out, 1);
+	if (!cmd->args)
+	{
+		free_history(data->history);
+		free_data(data);
+		exit(0);
+	}
 	call_execve(data, cmd);
 	// is_built_in ?
 	// call_built_in | call_execve
