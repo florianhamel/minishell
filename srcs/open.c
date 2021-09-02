@@ -6,11 +6,47 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/29 22:22:20 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/30 05:31:57 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/02 16:45:27 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	write_heredoc(t_data *data, t_redir *redir, int fd)
+{
+	char	*line;
+
+	ft_putstr_fd("> ", 0);
+	if (get_next_line(0, &line) == ERROR)
+		exit_custom(data, NULL, AUTO);
+	while (ft_strncmp(redir->word, line, ft_strlen(redir->word) + 1))
+	{
+		ft_putstr_fd(line, fd);
+		ft_putchar_fd('\n', fd);
+		free_null((void **)&line);
+		ft_putstr_fd("> ", 0);
+		if (get_next_line(0, &line) == ERROR)
+			exit_custom(data, NULL, AUTO);
+	}
+	free_null((void **)&line);
+}
+
+int	get_heredoc(t_data *data, t_redir *redir)
+{
+	int		fd;
+
+	fd = open(".heredoc", O_WRONLY | O_CREAT, 0666);
+	if (!fd)
+		exit_custom(data, NULL, AUTO);
+	write_heredoc(data, redir, fd);
+	close(fd);
+	fd = open(".heredoc", O_RDONLY);
+	if (!fd)
+		exit_custom(data, NULL, AUTO);
+	if (unlink(".heredoc") == ERROR)
+		exit_custom(data, NULL, AUTO);
+	return (fd);
+}
 
 int	get_infile(t_data *data, t_cmd *cmd)
 {
@@ -23,13 +59,17 @@ int	get_infile(t_data *data, t_cmd *cmd)
 	{
 		if (fd != NO_FD)
 			close(fd);
-		if (current->flag == SIMPLE_LEFT || 1)
-			fd = open(current->word, O_RDONLY);
-		if (fd == ERROR)
+		if (current->flag == SIMPLE_LEFT)
 		{
-			data->status = 1;
-			exit_custom(data, ft_strdup(current->word), CUSTOM);
+			fd = open(current->word, O_RDONLY);
+			if (fd == ERROR)
+			{
+				data->status = 1;
+				exit_custom(data, ft_strdup(current->word), CUSTOM);
+			}
 		}
+		else if (current->flag == DOUBLE_LEFT)
+			fd = get_heredoc(data, current);
 		current = current->next;
 	}
 	return (fd);
@@ -59,3 +99,4 @@ int	get_outfile(t_data *data, t_cmd *cmd)
 	}
 	return (fd);
 }
+

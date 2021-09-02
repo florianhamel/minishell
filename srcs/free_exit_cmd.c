@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:20:59 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/31 14:44:02 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/01 13:46:09 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,18 @@ void	free_data(t_data *data)
 	free_null((void **)&data);
 }
 
-char	*custom_strerror(int status)
+char	*custom_strerror(int status, char *word)
 {
 	if (status == 0)
 		return ("Success\n");
 	else if (status == 1)
 		return ("No such file or directory\n");
 	else if (status == 127)
+	{
+		if (check_slash_in(word))
+			return ("No such file or directory\n");
 		return ("command not found\n");
+	}
 	return (NULL);
 }
 
@@ -63,8 +67,8 @@ void	exit_custom(t_data *data, char *word, int flag)
 			ft_putstr_fd(word, 2);
 			ft_putstr_fd(": ", 2);
 		}
+		ft_putstr_fd(custom_strerror(status, word), 2);
 		free_null((void **)&word);
-		ft_putstr_fd(custom_strerror(status), 2);
 		exit(status);
 	}
 	exit_strerror();

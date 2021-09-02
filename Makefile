@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/08/30 13:14:10 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/01 13:36:31 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ D_OBJS		=	objs/
 
 D_SRCS		=	srcs/
 
-_SRC_		=	bin.c \
+_SRC_		=	bin_utils.c \
+				bin.c \
 				cmd_checkers.c \
 				cmd_utils.c \
 				cmd.c \

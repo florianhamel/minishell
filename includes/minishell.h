@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/08/31 14:43:43 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/02 16:08:20 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,16 @@ typedef	struct s_run
 }		t_run;
 
 // bin.c
-char		*concat_path_bin(t_data *data, char *s1, char *s2);
 char		*get_path_bin(t_data *data, char *name, char *var_path);
-char		*get_var_path(t_data *data);
 char		*get_bin(t_data *data, char *name);
 char		**get_argv(t_data *data, t_cmd *cmd);
+
+// bin_utils.c
+int			check_slash_in(char *name);
+int			is_direct_path(char *name);
+char		*concat_path_bin(t_data *data, char *path, char *bin);
+char		*get_var_path(t_data *data);
+
 
 // cmd_checkers.c
 int			is_redir(int c);
@@ -215,6 +220,7 @@ void		intro(void);
 void		minishell(void);
 
 // open.c
+int			get_heredoc(t_data *data, t_redir *redir);
 int			get_infile(t_data *data, t_cmd *cmd);
 int			get_outfile(t_data *data, t_cmd *cmd);
 
