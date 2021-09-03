@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/01 13:36:31 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/03 16:04:43 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ D_SRCS		=	srcs/
 
 _SRC_		=	bin_utils.c \
 				bin.c \
+				call.c \
 				cmd_checkers.c \
 				cmd_utils.c \
 				cmd.c \
@@ -40,7 +41,6 @@ _SRC_		=	bin_utils.c \
 				quotes.c \
 				read_utils.c \
 				read.c \
-				run_utils.c \
 				run.c \
 				set_utils.c \
 				set.c \

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/24 16:21:14 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 16:10:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int	syntax_error(t_data *data, int flag)
 {
 	data->status = 2;
 	if (flag == REDIR)
-		printf("%s\n", "minishell: redirection syntax error");
+		ft_putstr_fd("minishell: redirection syntax error\n", STDERR_FILENO);
 	else if (flag == PIPE)
-		printf("%s\n", "minishell: pipe syntax error");
+		ft_putstr_fd("minishell: pipe syntax error\n", STDERR_FILENO);
 	else
-		printf("%s\n", "minishell: syntax error");
+		ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 	return (ERROR);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:15:53 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/20 01:16:15 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 16:16:25 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_read	*init_read(t_data *data)
 
 void	abort_cmd(t_read *data, int *status)
 {
-	printf("^C");
+	ft_putstr_fd("^C", STDOUT_FILENO);
 	free_null((void **)&(data->str));
 	*status = 130;
 }

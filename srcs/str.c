@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/17 12:43:30 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/09 16:32:30 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 16:07:39 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ char	*new_del(t_read *data)
 		exit_parsing(data);
 	new = ft_strjoin(prev, next);
 	cursor_left(1);
-	ws_fd(ft_strlen(next) + 1, 0);
+	ws_fd(ft_strlen(next) + 1, STDIN_FILENO);
 	cursor_left(ft_strlen(next) + 1);
-	ft_write(0, next, ft_strlen(next));
+	ft_write(STDIN_FILENO, next, ft_strlen(next));
 	cursor_left(ft_strlen(next));
 	free_null((void **)&prev);
 	free_null((void **)&next);
@@ -46,7 +46,7 @@ char	*new_insert(t_read *data)
 	if (!prev)
 		exit_parsing(data);
 	new = ft_strjoin(prev, to_write);
-	ft_write(0, to_write, ft_strlen(to_write));
+	ft_write(STDIN_FILENO, to_write, ft_strlen(to_write));
 	cursor_left(ft_strlen(to_write) - 1);
 	free_null((void **)&prev);
 	free_null((void **)&to_write);
@@ -61,7 +61,7 @@ char	*new_char(t_read *data)
 	if (!new)
 		exit_parsing(data);
 	new[data->pos] = (char)data->c;
-	ft_write(0, &data->c, sizeof(data->c));
+	ft_write(STDIN_FILENO, &data->c, sizeof(data->c));
 	return (new);
 }
 

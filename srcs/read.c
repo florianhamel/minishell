@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/09/02 16:45:09 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 16:18:32 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	eof_mgmt(t_read *data)
 	if (!data->str || data->str[0] == '\0')
 	{
 		free_parsing(data);
-		printf("exit\n");
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 		exit(0);
 	}
 }
@@ -51,8 +51,8 @@ void	add_cmd(t_read *data, t_history **history)
 		exit_strerror();
 	if (data->str)
 	{
-		ft_write(fd, "\n", 1);
-		ft_write(fd, data->str, ft_strlen(data->str));
+		ft_putchar_fd('\n', fd);
+		ft_putstr_fd("data->str", fd);
 		replace_alloc(data->str, *history);
 		push_front(new_elem_history(NULL), history);
 	}
@@ -82,6 +82,6 @@ t_read	*get_input(t_data *data)
 		else
 			key_mgmt(data_parsing);
 	}
-	printf("\n");
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	return (data_parsing);
 }

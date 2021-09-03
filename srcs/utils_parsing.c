@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 18:03:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/08/31 17:17:12 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 16:16:58 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	ws_fd(size_t nb, int fd)
 	i = 0;
 	while (i < nb)
 	{
-		ft_write(fd, " ", 1);
+		ft_putchar_fd(' ', fd);
 		i++;
 	}
 }

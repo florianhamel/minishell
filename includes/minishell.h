@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/03 04:28:42 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 16:03:07 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,10 @@ int			is_direct_path(char *name);
 char		*concat_path_bin(t_data *data, char *path, char *bin);
 char		*get_var_path(t_data *data);
 
+// call.c
+void		call_builtin(t_data *data, t_cmd *cmd);
+void		call_execve(t_data *data, t_cmd *cmd);
+void		call(t_data *data, t_cmd *cmd, t_run run);
 
 // cmd_checkers.c
 int			is_redir(int c);
@@ -249,12 +253,11 @@ t_read		*get_input(t_data *data);
 
 // run_utils.c
 void		dup2_close(int new_fd, int old_fd);
-int			is_built_in(t_data *data, t_cmd *cmd);
+int			is_builtin(t_data *data, t_cmd *cmd);
 
 // run.c
-void		call_built_in(t_data *data, t_cmd *cmd);
-void		call_execve(t_data *data, t_cmd *cmd);
-void		call(t_data *data, t_cmd *cmd, t_run run);
+void		handler(int signum);
+int			run_cmd(t_data *data, t_cmd *cmd, int fd_pipe);
 void		run(t_data *data);
 
 // set_utils.c
