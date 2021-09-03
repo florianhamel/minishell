@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:20:59 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/01 13:46:09 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 15:47:58 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ void	exit_custom(t_data *data, char *word, int flag)
 	free_data(data);
 	if (flag == CUSTOM)
 	{
-		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		if (word)
 		{
-			ft_putstr_fd(word, 2);
-			ft_putstr_fd(": ", 2);
+			ft_putstr_fd(word, STDERR_FILENO);
+			ft_putstr_fd(": ", STDERR_FILENO);
 		}
-		ft_putstr_fd(custom_strerror(status, word), 2);
+		ft_putstr_fd(custom_strerror(status, word), STDERR_FILENO);
 		free_null((void **)&word);
 		exit(status);
 	}

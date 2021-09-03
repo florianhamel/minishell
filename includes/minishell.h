@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/02 16:08:20 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 04:28:42 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>

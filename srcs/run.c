@@ -6,11 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/02 16:17:49 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 15:50:57 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	glob_pid;
 
 // void	call_built_in(t_data *data, t_cmd *cmd)
 // {
@@ -45,13 +47,13 @@ void	call(t_data *data, t_cmd *cmd, t_run run)
 	run.fd_in = get_infile(data, cmd);
 	run.fd_out = get_outfile(data, cmd);
 	if (run.fd_pipe != NO_FD)
-		dup2_close(run.fd_pipe, 0);
+		dup2_close(run.fd_pipe, STDIN_FILENO);
 	if (cmd->next)
-		dup2_close(run.fd[1], 1);
+		dup2_close(run.fd[1], STDOUT_FILENO);
 	if (run.fd_in != NO_FD)
-		dup2_close(run.fd_in, 0);
+		dup2_close(run.fd_in, STDIN_FILENO);
 	if (run.fd_out != NO_FD)
-		dup2_close(run.fd_out, 1);
+		dup2_close(run.fd_out, STDOUT_FILENO);
 	if (!cmd->args)
 	{
 		free_history(data->history);
@@ -63,16 +65,39 @@ void	call(t_data *data, t_cmd *cmd, t_run run)
 	// call_built_in | call_execve
 }
 
+void	handler(int signum)
+{
+	if (signum == SIGINT)
+	{	
+		if (glob_pid > 0)
+		{	
+			kill(glob_pid, SIGINT);
+			ft_putchar_fd('\n', STDOUT_FILENO);
+		}
+	}
+	else if (signum == SIGQUIT)
+	{
+		if (glob_pid > 0)
+		{
+			kill(glob_pid, SIGQUIT);
+			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+		}
+	}	
+}
+
 int	run_cmd(t_data *data, t_cmd *cmd, int fd_pipe)
 {
 	t_run	run;
 
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
 	run.fd_pipe = fd_pipe;
 	run.fd_in = NO_FD;
 	run.fd_out = NO_FD;
 	if (pipe(run.fd) == ERROR)
 		exit_custom(data, NULL, AUTO);
 	run.pid = fork();
+	glob_pid = run.pid;
 	if (run.pid == ERROR)
 		exit_custom(data, NULL, AUTO);
 	if (run.pid == CHILD)
