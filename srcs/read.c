@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/09/03 16:18:32 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/03 19:45:56 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	add_cmd(t_read *data, t_history **history)
 	if (data->str)
 	{
 		ft_putchar_fd('\n', fd);
-		ft_putstr_fd("data->str", fd);
+		ft_putstr_fd(data->str, fd);
 		replace_alloc(data->str, *history);
 		push_front(new_elem_history(NULL), history);
 	}

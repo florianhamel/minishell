@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/03 16:03:07 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/04 17:10:35 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,14 @@ typedef	struct s_run
 	int	fd_pipe;
 	int	fd_in;
 	int	fd_out;
-	int	pid;
 	int status;
 }		t_run;
+
+typedef struct s_sig
+{
+	t_data	*data;
+	int		pid;
+}		t_sig;
 
 // bin.c
 char		*get_path_bin(t_data *data, char *name, char *var_path);
@@ -186,6 +191,16 @@ void		exit_strerror(void);
 void		free_parsing(t_read *data);
 void		exit_parsing(t_read *data);
 
+// heredoc_utils.c
+void		stop_heredoc(t_read *heredoc);
+void		eof_heredoc(t_read *heredoc, t_redir *redir);
+void		input_heredoc(t_read *heredoc, t_redir *redir);
+
+// heredoc.c
+t_read		*init_heredoc(t_data *data);
+void		write_heredoc(t_read *heredoc, t_redir *redir, int fd);
+int			get_heredoc(t_data *data, t_redir *redir);
+
 /*
 ** history_navigation.c
 */
@@ -218,14 +233,12 @@ t_history	*get_list(int fd, int max);
 void		flip_history(t_history **history);
 t_history	*get_history(int max);
 
-/*
-** main.c
-*/
+// minishell.c
 void		intro(void);
+t_data		*init_data(void);
 void		minishell(void);
 
 // open.c
-int			get_heredoc(t_data *data, t_redir *redir);
 int			get_infile(t_data *data, t_cmd *cmd);
 int			get_outfile(t_data *data, t_cmd *cmd);
 
@@ -256,7 +269,7 @@ void		dup2_close(int new_fd, int old_fd);
 int			is_builtin(t_data *data, t_cmd *cmd);
 
 // run.c
-void		handler(int signum);
+void		stop_process(int signum);
 int			run_cmd(t_data *data, t_cmd *cmd, int fd_pipe);
 void		run(t_data *data);
 
