@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/04 18:58:52 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/05 23:45:00 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,23 @@ void	stop_process(int signum)
 			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
 		}
 	}	
+}
+
+void	add_var_def_lst(t_data *data, t_var *var_def_lst)
+{
+	t_var	*current;
+	t_var	*new_var;
+
+	new_var = var_def_lst;
+	while (new_var)
+	{
+		current = data->var_lst;
+		while (current->next)
+			current = current->next;
+		new_var->prev = current;
+		current->next = new_var;
+		new_var = new_var->next;
+	}
 }
 
 int	run_cmd(t_data *data, t_cmd *cmd, int fd_pipe)
@@ -68,6 +85,8 @@ void	run(t_data *data)
 	current = data->cmd_lst;
 	while (current)
 	{
+		if (current->var_def_lst && !current->args)
+			add_var_def_lst(data, current->var_def_lst);
 		fd_pipe = run_cmd(data, current, fd_pipe);
 		if (data->status == 130)
 			break ;

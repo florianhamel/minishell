@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/04 16:29:02 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/05 23:31:35 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ _SRC_		=	bin_utils.c \
 				str_utils.c \
 				str.c \
 				utils_parsing.c \
+				var_def.c \
 				var_utils.c \
 				var.c \
 

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/04 17:10:35 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/05 23:33:07 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct s_cmd
 	struct s_redir	*in_lst;
 	struct s_redir	*out_lst;
 	char			*args;
+	t_var			*var_def_lst;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }		t_cmd;
@@ -310,6 +311,12 @@ t_var		*init_var_lst(t_data *data);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);
+
+// var_def.c
+int			is_var_def(char *str);
+char		*get_var_def_name(t_data *data, int *pos);
+char		*get_var_def_val(t_data *data, int *pos);
+void		set_var_def(t_data *data, int *pos, t_cmd *cmd);
 
 // var_utils.c
 int			find_var_env(t_data *data, char *var_name);

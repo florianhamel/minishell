@@ -6,57 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 20:29:28 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/04 17:10:26 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/05 23:49:46 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void	write_heredoc(t_data *data, t_redir *redir, int fd)
-// {
-// 	int		ret;
-// 	char	*line;
-
-// 	ft_putstr_fd("> ", STDIN_FILENO);
-// 	ret = get_next_line(STDIN_FILENO, &line);
-// 	if (ret == ERROR)		
-// 		exit_custom(data, NULL, AUTO);
-// 	else if (ret == 0 && !ft_strlen(line))
-// 	{
-// 		ft_putstr_fd("minishell: warning: EOF, wanted ('", STDERR_FILENO);
-// 		ft_putstr_fd(redir->word, STDERR_FILENO);
-// 		ft_putstr_fd("')\n", STDERR_FILENO);
-// 		free_unlink();
-// 		exit(0);
-// 	}
-// 	while (ft_strncmp(redir->word, line, ft_strlen(redir->word) + 1))
-// 	{
-// 		ft_putstr_fd(line, fd);
-// 		ft_putchar_fd('\n', fd);
-// 		free_null((void **)&line);
-// 		ft_putstr_fd("> ", STDIN_FILENO);
-// 		if (get_next_line(STDIN_FILENO, &line) == ERROR)
-// 			exit_custom(data, NULL, AUTO);
-// 	}
-// 	free_null((void **)&line);
-// }
-
-// int	get_heredoc(t_data *data, t_redir *redir)
-// {
-// 	int		fd;
-
-// 	fd = open(".heredoc", O_TRUNC | O_WRONLY | O_CREAT, 0666);
-// 	if (!fd)
-// 		exit_custom(data, NULL, AUTO);
-// 	write_heredoc(data, redir, fd);
-// 	close(fd);
-// 	fd = open(".heredoc", O_RDONLY);
-// 	if (!fd)
-// 		exit_custom(data, NULL, AUTO);
-// 	if (unlink(".heredoc") == ERROR)
-// 		exit_custom(data, NULL, AUTO);
-// 	return (fd);
-// }
 
 t_read	*init_heredoc(t_data *data)
 {
