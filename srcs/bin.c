@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 15:58:45 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/03 22:13:57 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:31:44 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_bin(t_data *data, char *name)
 	if (var_path)
 		path_bin = get_path_bin(data, name, var_path);
 	free_null((void **)&var_path);
-	return (path_bin);	
+	return (path_bin);
 }
 
 char	**get_argv(t_data *data, t_cmd *cmd)

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:56:07 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/05 22:33:10 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:29:09 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ char	*get_arg(t_data *data, int *pos)
 			var_val = get_var(data, pos);
 			if (var_val)
 				arg = concat_str(data, arg, var_val);
-			else
-				return (arg);
 		}
 		else if (is_quote(data->str[*pos]) && is_closed_quote(data, pos))
 			arg = concat_str(data, arg, get_quote(data, pos));
@@ -55,7 +53,7 @@ t_cmd	*new_elem_cmd(t_data *data)
 	return (elem);
 }
 
-void	append_cmd (t_cmd **cmd_lst, t_cmd *cmd)
+void	append_cmd(t_cmd **cmd_lst, t_cmd *cmd)
 {
 	t_cmd	*current;
 
@@ -130,7 +128,6 @@ void	print_cmd(t_data *data)
 		printf("next: %p$\n", current->next);
 		current = current->next;
 	}
-
 }
 
 t_cmd	*get_cmd_lst(t_data *data)

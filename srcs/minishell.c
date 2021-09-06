@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 01:51:19 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/04 01:52:57 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:26:57 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sig	sig_data;
+t_sig	g_data;
 
 void	intro(void)
 {
@@ -41,7 +41,7 @@ void	minishell(void)
 	t_read		*data_parsing;
 
 	data = init_data();
-	sig_data.data = data;
+	g_data.data = data;
 	if (signal(SIGINT, stop_process) == SIG_ERR)
 		exit_custom(data, NULL, AUTO);
 	if (signal(SIGQUIT, stop_process) == SIG_ERR)

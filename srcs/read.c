@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/09/03 19:45:56 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:30:12 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	eof_mgmt(t_read *data)
 	}
 }
 
-int		is_valid_input(int c)
+int	is_valid_input(int c)
 {
 	if (32 <= c && c <= 127)
 		return (1);

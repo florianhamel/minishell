@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/05 23:33:07 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:33:15 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,13 @@ typedef struct s_data
 	struct s_history	*history;
 }		t_data;
 
-typedef	struct s_run
+typedef struct s_run
 {
 	int	fd[2];
 	int	fd_pipe;
 	int	fd_in;
 	int	fd_out;
-	int status;
+	int	status;
 }		t_run;
 
 typedef struct s_sig
@@ -280,7 +280,6 @@ int			get_flag_in(t_data *data, int *pos);
 int			get_flag_out(t_data *data, int *pos);
 void		set_redir_in(t_data *data, int *pos, t_cmd *cmd);
 void		set_redir_out(t_data *data, int *pos, t_cmd *cmd);
-
 
 // set.c
 int			syntax_error(t_data *data, int flag);

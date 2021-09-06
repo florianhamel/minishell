@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 11:50:28 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/05 23:31:40 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:29:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		get_flag_in(t_data *data, int *pos)
+int	get_flag_in(t_data *data, int *pos)
 {
 	(*pos)++;
 	if (data->str[*pos] == '<')
@@ -23,7 +23,7 @@ int		get_flag_in(t_data *data, int *pos)
 	return (SIMPLE_LEFT);
 }
 
-int		get_flag_out(t_data *data, int *pos)
+int	get_flag_out(t_data *data, int *pos)
 {
 	(*pos)++;
 	if (data->str[*pos] == '>')

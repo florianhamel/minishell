@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 16:05:43 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/04 18:58:40 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:28:11 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	eof_heredoc(t_read *heredoc, t_redir *redir)
 
 void	input_heredoc(t_read *heredoc, t_redir *redir)
 {
-	if  (heredoc->c == CTRL_D)
+	if (heredoc->c == CTRL_D)
 		eof_heredoc(heredoc, redir);
 	else if (heredoc->c == RIGHT_KEY || heredoc->c == LEFT_KEY)
 		cursor_move(heredoc);

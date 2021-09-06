@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 15:56:46 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/05 19:53:19 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:30:36 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	is_builtin(t_data *data, t_cmd *cmd)
 	args = ft_split(cmd->args, ' ');
 	if (!args)
 		exit_custom(data, NULL, AUTO);
-	if (!ft_strncmp("echo", args[0], 5) ||\
-	!ft_strncmp("cd", args[0], 3) ||\
-	!ft_strncmp("pwd", args[0], 4) ||\
-	!ft_strncmp("export", args[0], 7) ||\
-	!ft_strncmp("unset", args[0], 6) ||\
-	!ft_strncmp("env", args[0], 4) ||\
+	if (!ft_strncmp("echo", args[0], 5) || \
+	!ft_strncmp("cd", args[0], 3) || \
+	!ft_strncmp("pwd", args[0], 4) || \
+	!ft_strncmp("export", args[0], 7) || \
+	!ft_strncmp("unset", args[0], 6) || \
+	!ft_strncmp("env", args[0], 4) || \
 	!ft_strncmp("exit", args[0], 5))
 	{
 		ft_free_arr(args);

@@ -6,29 +6,29 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/05 23:45:00 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:26:41 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_sig	sig_data;
+extern t_sig	g_data;
 
 void	stop_process(int signum)
 {
 	if (signum == SIGINT)
 	{	
-		if (sig_data.pid > 0)
+		if (g_data.pid > 0)
 		{	
-			kill(sig_data.pid, SIGINT);
+			kill(g_data.pid, SIGINT);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
 	}
 	else if (signum == SIGQUIT)
 	{
-		if (sig_data.pid > 0)
+		if (g_data.pid > 0)
 		{
-			kill(sig_data.pid, SIGQUIT);
+			kill(g_data.pid, SIGQUIT);
 			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
 		}
 	}	
@@ -60,15 +60,15 @@ int	run_cmd(t_data *data, t_cmd *cmd, int fd_pipe)
 	run.fd_out = NO_FD;
 	if (pipe(run.fd) == ERROR)
 		exit_custom(data, NULL, AUTO);
-	sig_data.pid = fork();
-	if (sig_data.pid == ERROR)
+	g_data.pid = fork();
+	if (g_data.pid == ERROR)
 		exit_custom(data, NULL, AUTO);
-	if (sig_data.pid == CHILD)
+	if (g_data.pid == CHILD)
 		call(data, cmd, run);
 	if (fd_pipe != NO_FD)
 		close(fd_pipe);
 	close(run.fd[1]);
-	waitpid(sig_data.pid, &run.status, 0);
+	waitpid(g_data.pid, &run.status, 0);
 	data->status = WEXITSTATUS(run.status);
 	return (run.fd[0]);
 }

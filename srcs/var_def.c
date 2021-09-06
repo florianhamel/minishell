@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 22:05:40 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/05 23:31:22 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:01:26 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,19 @@ char	*get_var_def_name(t_data *data, int *pos)
 char	*get_var_def_val(t_data *data, int *pos)
 {
 	char	*var_def_val;
+	char	*var_val;
 
 	var_def_val = NULL;
+	var_val = NULL;
 	(*pos)++;
 	while (data->str[*pos] && !ft_is_ws(data->str[*pos]))
 	{
-		var_def_val = add_char(data, var_def_val, data->str[*pos]);
-		(*pos)++;
+		if (data->str[*pos] == '$')
+			var_def_val = concat_str(data, var_def_val, get_var(data, pos));
+		else if (is_quote(data->str[*pos]) && is_closed_quote(data, pos))
+			var_def_val = concat_str(data, var_def_val, get_quote(data, pos));
+		else
+			var_def_val = add_char(data, var_def_val, data->str[(*pos)++]);
 	}
 	return (var_def_val);
 }
