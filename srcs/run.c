@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 15:26:41 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 17:14:18 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,24 @@ void	stop_process(int signum)
 	}	
 }
 
-void	add_var_def_lst(t_data *data, t_var *var_def_lst)
+int	run_builtin(t_data *data, t_cmd *cmd, int fd_pipe)
 {
-	t_var	*current;
-	t_var	*new_var;
+	t_run	run;
 
-	new_var = var_def_lst;
-	while (new_var)
-	{
-		current = data->var_lst;
-		while (current->next)
-			current = current->next;
-		new_var->prev = current;
-		current->next = new_var;
-		new_var = new_var->next;
-	}
+	run.fd_pipe = fd_pipe;
+	run.fd_in = NO_FD;
+	run.fd_out = NO_FD;
+	if (pipe(run.fd) == ERROR)
+		exit_custom(data, NULL, AUTO);
+	if (fd_pipe != NO_FD)
+		close(fd_pipe);
+	close(run.fd[1]);
+	waitpid(g_data.pid, &run.status, 0);
+	data->status = call_builtin(data, cmd, run);
+	return (run.fd[0]);
 }
 
-int	run_cmd(t_data *data, t_cmd *cmd, int fd_pipe)
+int	run_execve(t_data *data, t_cmd *cmd, int fd_pipe)
 {
 	t_run	run;
 
@@ -64,7 +64,7 @@ int	run_cmd(t_data *data, t_cmd *cmd, int fd_pipe)
 	if (g_data.pid == ERROR)
 		exit_custom(data, NULL, AUTO);
 	if (g_data.pid == CHILD)
-		call(data, cmd, run);
+		call_execve(data, cmd, run);
 	if (fd_pipe != NO_FD)
 		close(fd_pipe);
 	close(run.fd[1]);
@@ -87,7 +87,10 @@ void	run(t_data *data)
 	{
 		if (current->var_def_lst && !current->args)
 			add_var_def_lst(data, current->var_def_lst);
-		fd_pipe = run_cmd(data, current, fd_pipe);
+		if (is_builtin(data, current))
+			fd_pipe = run_builtin(data, current, fd_pipe);
+		else
+			fd_pipe = run_execve(data, current, fd_pipe);
 		if (data->status == 130)
 			break ;
 		current = current->next;

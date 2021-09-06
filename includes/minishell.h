@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/06 15:33:15 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 17:16:03 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,11 @@ char		*concat_path_bin(t_data *data, char *path, char *bin);
 char		*get_var_path(t_data *data);
 
 // call.c
-void		call_builtin(t_data *data, t_cmd *cmd);
-void		call_execve(t_data *data, t_cmd *cmd);
-void		call(t_data *data, t_cmd *cmd, t_run run);
+void		dup2_close(int new_fd, int old_fd);
+int			is_builtin(t_data *data, t_cmd *cmd);
+void		call_setup(t_data *data, t_cmd *cmd, t_run run);
+int			call_builtin(t_data *data, t_cmd *cmd, t_run run);
+void		call_execve(t_data *data, t_cmd *cmd, t_run run);
 
 // cmd_checkers.c
 int			is_redir(int c);
@@ -265,13 +267,10 @@ void		key_mgmt(t_read *data);
 void		add_cmd(t_read *data, t_history **history);
 t_read		*get_input(t_data *data);
 
-// run_utils.c
-void		dup2_close(int new_fd, int old_fd);
-int			is_builtin(t_data *data, t_cmd *cmd);
-
 // run.c
 void		stop_process(int signum);
-int			run_cmd(t_data *data, t_cmd *cmd, int fd_pipe);
+int			run_builtin(t_data *data, t_cmd *cmd, int fd_pipe);
+int			run_execve(t_data *data, t_cmd *cmd, int fd_pipe);
 void		run(t_data *data);
 
 // set_utils.c
@@ -312,6 +311,7 @@ void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);
 
 // var_def.c
+void		add_var_def_lst(t_data *data, t_var *var_def_lst);
 int			is_var_def(char *str);
 char		*get_var_def_name(t_data *data, int *pos);
 char		*get_var_def_val(t_data *data, int *pos);

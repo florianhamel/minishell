@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 15:56:46 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 15:30:36 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 17:23:13 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,35 +42,7 @@ int	is_builtin(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-// void	call_builtin(t_data *data, t_cmd *cmd)
-// {
-// 	if (!ft_strncmp("echo", data->str, 4))
-// 		data->status = ft_echo(data, cmd);
-// 	else if (!ft_strncmp("cd", data->str, 2))
-// 		data->status = ft_cd(data, cmd);
-// 	else if (!ft_strncmp("pwd", data->str, 3))
-// 		data->status = ft_pwd(data, cmd);
-// 	else if (!ft_strncmp("export", data->str, 6))
-// 		data->status = ft_export(data, cmd);
-// 	else if (!ft_strncmp("unset", data->str, 5))
-// 		data->status = ft_unset(data, cmd);
-// 	else if (!ft_strncmp("env", data->str, 3))
-// 		data->status = ft_env(data, cmd);
-// 	else if (!ft_strncmp("exit", data->str, 4))
-// 		data->status = ft_exit(data, cmd);
-// }
-
-void	call_execve(t_data *data, t_cmd *cmd)
-{
-	char	**argv;
-
-	argv = get_argv(data, cmd);
-	if (argv)
-		if (execve(argv[0], argv, data->env) == ERROR)
-			exit_custom(data, NULL, AUTO);
-}
-
-void	call(t_data *data, t_cmd *cmd, t_run run)
+void	call_setup(t_data *data, t_cmd *cmd, t_run run)
 {
 	run.fd_in = get_infile(data, cmd);
 	run.fd_out = get_outfile(data, cmd);
@@ -78,17 +50,47 @@ void	call(t_data *data, t_cmd *cmd, t_run run)
 		dup2_close(run.fd_pipe, STDIN_FILENO);
 	if (cmd->next)
 		dup2_close(run.fd[1], STDOUT_FILENO);
+	else
+	{
+		close(run.fd[0]);
+		close(run.fd[1]);
+	}
 	if (run.fd_in != NO_FD)
 		dup2_close(run.fd_in, STDIN_FILENO);
 	if (run.fd_out != NO_FD)
 		dup2_close(run.fd_out, STDOUT_FILENO);
-	if (!cmd->args)
-	{
-		free_history(data->history);
-		free_data(data);
-		exit(0);
-	}
-	// if (is_builtin(cmd))
-	// 	call_builtin(data, cmd);
-	call_execve(data, cmd);
+}
+
+int	call_builtin(t_data *data, t_cmd *cmd, t_run run)
+{
+	call_setup(data, cmd, run);
+	// if (!ft_strncmp("echo", data->str, 4))
+	// 	return(ft_echo(data, cmd));
+	// if (!ft_strncmp("cd", data->str, 2))
+	// 	return (ft_cd(data, cmd));
+	// if (!ft_strncmp("pwd", data->str, 3))
+	// 	return (ft_pwd(data, cmd));
+	// if (!ft_strncmp("export", data->str, 6))
+	// 	return (ft_export(data, cmd));
+	// if (!ft_strncmp("unset", data->str, 5))
+	// 	return (ft_unset(data, cmd));
+	// if (!ft_strncmp("env", data->str, 3))
+	// 	return(ft_env(data, cmd));
+	// if (!ft_strncmp("exit", data->str, 4))
+	// 	return(ft_exit(data, cmd));
+	return (0);
+}
+
+void	call_execve(t_data *data, t_cmd *cmd, t_run run)
+{
+	char	**argv;
+
+	call_setup(data, cmd, run);
+	argv = get_argv(data, cmd);
+	if (argv)
+		if (execve(argv[0], argv, data->env) == ERROR)
+			exit_custom(data, NULL, AUTO);
+	free_history(data->history);
+	free_data(data);
+	exit(0);
 }

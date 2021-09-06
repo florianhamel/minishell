@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 14:57:09 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 16:40:23 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,7 @@ void	set_args(t_data *data, int *pos, t_cmd *cmd)
 	data->str[*pos] != '|')
 	{
 		if (data->str[*pos] == '$')
-		{
-			var_val = get_var(data, pos);
-			if (var_val)
-				cmd->args = concat_str(data, cmd->args, var_val);
-		}
+			cmd->args = concat_str(data, cmd->args, get_var(data, pos));
 		else if (is_quote(data->str[*pos]) && is_closed_quote(data, pos))
 			cmd->args = concat_str(data, cmd->args, get_quote(data, pos));
 		else

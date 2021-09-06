@@ -6,11 +6,28 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 22:05:40 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 15:01:26 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/06 17:14:23 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	add_var_def_lst(t_data *data, t_var *var_def_lst)
+{
+	t_var	*current;
+	t_var	*new_var;
+
+	new_var = var_def_lst;
+	while (new_var)
+	{
+		current = data->var_lst;
+		while (current->next)
+			current = current->next;
+		new_var->prev = current;
+		current->next = new_var;
+		new_var = new_var->next;
+	}
+}
 
 int	is_var_def(char *str)
 {
