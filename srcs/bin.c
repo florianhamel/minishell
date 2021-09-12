@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/25 15:58:45 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 15:31:44 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/09 18:01:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,11 @@ char	**get_argv(t_data *data, t_cmd *cmd)
 	char		*word;
 
 	argv = NULL;
-	if (cmd->args)
-	{
-		argv = ft_split(cmd->args, ' ');
-		if (!argv)
-			exit_custom(data, NULL, AUTO);
-	}
+	if (!cmd->args)
+		return (argv);
+	argv = ft_split(cmd->args, ' ');
+	if (!argv)
+		exit_custom(data, NULL, AUTO);
 	if (is_direct_path(argv[0]))
 		return (argv);
 	bin = get_bin(data, argv[0]);

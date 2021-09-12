@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:56:07 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 15:29:09 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/09 18:00:06 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	free_cmd_lst(t_data *data)
 		cmd = cmd->prev;
 	while (cmd)
 	{
+		free_var_def_lst(cmd->var_def_lst);
 		next = cmd->next;
 		free_redir_lst(cmd->in_lst);
 		cmd->in_lst = NULL;

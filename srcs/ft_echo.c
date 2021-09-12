@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/15 16:36:36 by user42            #+#    #+#             */
-/*   Updated: 2021/09/07 13:13:18 by fhamel           ###   ########.fr       */
+/*   Created: 2021/09/06 19:31:49 by fhamel            #+#    #+#             */
+/*   Updated: 2021/09/09 18:41:20 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+int	ft_echo(char **args)
 {
-	(void)ac;
-	(void)av;
-	minishell(env);
+	int	i;
+
+	i = 1;
+	if (ft_strncmp(args[1], "-n", 3) == 0)
+		i++;
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], 1);
+		if (args[i + 1])
+			ft_putstr_fd(" ", 1);
+		i++;
+	}
+	if (ft_strncmp(args[1], "-n", 3) == 0)
+		return (0);
+	ft_putstr_fd("\n", 1);
+	ft_free_arr(args);
 	return (0);
 }

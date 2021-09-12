@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Fayel-ha <Fayel-ha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/15 16:36:36 by user42            #+#    #+#             */
-/*   Updated: 2021/09/07 13:13:18 by fhamel           ###   ########.fr       */
+/*   Created: 2021/09/07 16:41:35 by Fayel-ha          #+#    #+#             */
+/*   Updated: 2021/09/07 16:41:43 by Fayel-ha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char **av, char **env)
+int	ft_pwd(t_data *data, char **args)
 {
-	(void)ac;
-	(void)av;
-	minishell(env);
-	return (0);
+	char	cwd[PATH_MAX];
+
+	(void)data;
+	(void)args;
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
+		printf("%s\n", cwd);
+		return (1);
+	}
+	else
+	{
+		perror("getcwd()");
+		return (0);
+	}
 }

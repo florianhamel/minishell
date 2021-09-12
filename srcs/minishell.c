@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 01:51:19 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 15:26:57 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/12 13:13:36 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ void	intro(void)
 	ft_putstr_fd("\033[0;37mminishell\033[0;92m$\033[0m ", 1);
 }
 
-t_data	*init_data(void)
+t_data	*init_data(char **env)
 {
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	if (!data)
 		exit_strerror();
-	data->env = copy_env(data);
+	data->env = copy_env(data, env);
 	data->str = NULL;
 	data->status = 0;
 	data->var_lst = init_var_lst(data);
@@ -35,12 +35,12 @@ t_data	*init_data(void)
 	return (data);
 }
 
-void	minishell(void)
+void	minishell(char **env)
 {
 	t_data		*data;
 	t_read		*data_parsing;
 
-	data = init_data();
+	data = init_data(env);
 	g_data.data = data;
 	if (signal(SIGINT, stop_process) == SIG_ERR)
 		exit_custom(data, NULL, AUTO);

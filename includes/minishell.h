@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/06 17:16:03 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/12 13:28:18 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <limits.h> 
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -134,6 +135,23 @@ typedef struct s_sig
 	int		pid;
 }		t_sig;
 
+typedef struct	s_exp
+{
+	char 	**tab;
+	char 	**tab2;
+	char	*name;
+	char	*val;
+	char	*tmp1;
+	int		count;
+	int 	i;
+	int 	j;
+}				t_exp;
+
+// add_var_def.c
+void		append_var_def(t_var *var_def, t_data *data);
+void		add_var_def_lst(t_data *data, t_var *var_def_lst);
+void		free_var_def_lst(t_var *var_def_lst);
+
 // bin.c
 char		*get_path_bin(t_data *data, char *name, char *var_path);
 char		*get_bin(t_data *data, char *name);
@@ -151,6 +169,27 @@ int			is_builtin(t_data *data, t_cmd *cmd);
 void		call_setup(t_data *data, t_cmd *cmd, t_run run);
 int			call_builtin(t_data *data, t_cmd *cmd, t_run run);
 void		call_execve(t_data *data, t_cmd *cmd, t_run run);
+
+// ft_pwd.c // ft_echo.c // ft_exit.c // ft_export.c // ft_env.c
+void	ft_mallocb(t_data *data, char *val, char *name);
+int		ft_export(t_data *data, char **args);
+int		ft_env(t_data *data, char **args);
+int		ft_pwd(t_data *data, char **args);
+int		ft_exit(t_data *data, char **args);
+int		is_char(const char *s, char c);
+void    ft_add_env(t_data *data, char **tab);
+void	ft_cpy_export(t_data *data, char *name, char *val);
+int		ft_cd(t_data *data, char **path);
+int		ft_unset(t_data *data, char **args, int i);
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_unset_env(t_data *data, char **args, int i);
+int		ft_error(char **args);
+int		ft_error_uns(char **args, int i);
+int     split_tab(char **args, t_exp *tmp);
+int     loop_exp(t_data *data, char **args, t_exp *tmp);
+int     ft_continue(t_data *data, char **args, t_exp *tmp);
+void	ft_free_unset(t_var *tmp);
+void	ft_free_exit(t_data *data, char **args, int count);
 
 // cmd_checkers.c
 int			is_redir(int c);
@@ -193,6 +232,9 @@ void		free_null(void **ptr);
 void		exit_strerror(void);
 void		free_parsing(t_read *data);
 void		exit_parsing(t_read *data);
+
+// ft_echo.c
+int			ft_echo(char **args);
 
 // heredoc_utils.c
 void		stop_heredoc(t_read *heredoc);
@@ -238,8 +280,8 @@ t_history	*get_history(int max);
 
 // minishell.c
 void		intro(void);
-t_data		*init_data(void);
-void		minishell(void);
+t_data		*init_data(char **env);
+void		minishell(char **env);
 
 // open.c
 int			get_infile(t_data *data, t_cmd *cmd);
@@ -268,6 +310,7 @@ void		add_cmd(t_read *data, t_history **history);
 t_read		*get_input(t_data *data);
 
 // run.c
+int			get_status_error(int signum);
 void		stop_process(int signum);
 int			run_builtin(t_data *data, t_cmd *cmd, int fd_pipe);
 int			run_execve(t_data *data, t_cmd *cmd, int fd_pipe);
@@ -304,7 +347,7 @@ void		str_mgmt(t_read *data);
 /*
 ** utils_parsing.c
 */
-char		**copy_env(t_data *data);
+char		**copy_env(t_data *data, char **env);
 t_var		*init_var_lst(t_data *data);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);

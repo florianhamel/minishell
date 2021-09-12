@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 15:56:46 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 17:23:13 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/12 13:14:26 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,26 @@ void	call_setup(t_data *data, t_cmd *cmd, t_run run)
 
 int	call_builtin(t_data *data, t_cmd *cmd, t_run run)
 {
+	char	**args;
+
+	if (!cmd->args)
+		return (0);
 	call_setup(data, cmd, run);
-	// if (!ft_strncmp("echo", data->str, 4))
-	// 	return(ft_echo(data, cmd));
-	// if (!ft_strncmp("cd", data->str, 2))
-	// 	return (ft_cd(data, cmd));
-	// if (!ft_strncmp("pwd", data->str, 3))
-	// 	return (ft_pwd(data, cmd));
-	// if (!ft_strncmp("export", data->str, 6))
-	// 	return (ft_export(data, cmd));
-	// if (!ft_strncmp("unset", data->str, 5))
-	// 	return (ft_unset(data, cmd));
-	// if (!ft_strncmp("env", data->str, 3))
-	// 	return(ft_env(data, cmd));
-	// if (!ft_strncmp("exit", data->str, 4))
-	// 	return(ft_exit(data, cmd));
+	args = ft_split(cmd->args, ' ');
+	if (!ft_strncmp("echo", args[0], 5))
+		return (ft_echo(args));
+	if (!ft_strncmp("cd", args[0], 3))
+		return (ft_cd(data, args));
+	if (!ft_strncmp("pwd", args[0], 4))
+		return (ft_pwd(data, args));
+	if (!ft_strncmp("export", args[0], 7))
+		return (ft_export(data, args));
+	if (!ft_strncmp("unset", args[0], 6))
+		return (ft_unset(data, args, 1));
+	if (!ft_strncmp("env", args[0], 4))
+		return (ft_env(data, args));
+	if (!ft_strncmp("exit", args[0], 5))
+		return (ft_exit(data, args));
 	return (0);
 }
 

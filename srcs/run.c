@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 17:14:18 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/12 13:31:49 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,23 @@
 
 extern t_sig	g_data;
 
+int		get_status_error(int signum)
+{
+	if (signum == SIGINT)
+		return (130);
+	if (signum == SIGQUIT)
+		return (131);
+	return (0);
+}
+
 void	stop_process(int signum)
 {
 	if (signum == SIGINT)
-	{	
+	{
 		if (g_data.pid > 0)
 		{	
 			kill(g_data.pid, SIGINT);
-			ft_putchar_fd('\n', STDOUT_FILENO);
+			ft_putchar_fd('\n', STDERR_FILENO);
 		}
 	}
 	else if (signum == SIGQUIT)
@@ -29,7 +38,7 @@ void	stop_process(int signum)
 		if (g_data.pid > 0)
 		{
 			kill(g_data.pid, SIGQUIT);
-			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 		}
 	}	
 }
@@ -37,17 +46,21 @@ void	stop_process(int signum)
 int	run_builtin(t_data *data, t_cmd *cmd, int fd_pipe)
 {
 	t_run	run;
+	int		fd_in;
+	int		fd_out;
 
+	fd_in = dup(STDIN_FILENO);
+	fd_out = dup(STDOUT_FILENO);
 	run.fd_pipe = fd_pipe;
 	run.fd_in = NO_FD;
 	run.fd_out = NO_FD;
 	if (pipe(run.fd) == ERROR)
 		exit_custom(data, NULL, AUTO);
+	data->status = call_builtin(data, cmd, run);
 	if (fd_pipe != NO_FD)
 		close(fd_pipe);
-	close(run.fd[1]);
-	waitpid(g_data.pid, &run.status, 0);
-	data->status = call_builtin(data, cmd, run);
+	dup2(fd_in, STDIN_FILENO);
+	dup2(fd_out, STDOUT_FILENO);
 	return (run.fd[0]);
 }
 
@@ -69,7 +82,10 @@ int	run_execve(t_data *data, t_cmd *cmd, int fd_pipe)
 		close(fd_pipe);
 	close(run.fd[1]);
 	waitpid(g_data.pid, &run.status, 0);
-	data->status = WEXITSTATUS(run.status);
+	if (WIFSIGNALED(run.status))
+		data->status = get_status_error(WTERMSIG(run.status));
+	else
+		data->status = WEXITSTATUS(run.status);
 	return (run.fd[0]);
 }
 
@@ -85,7 +101,8 @@ void	run(t_data *data)
 	current = data->cmd_lst;
 	while (current)
 	{
-		if (current->var_def_lst && !current->args)
+		if (current->var_def_lst && !current->args && \
+		!current->prev && !current->next)
 			add_var_def_lst(data, current->var_def_lst);
 		if (is_builtin(data, current))
 			fd_pipe = run_builtin(data, current, fd_pipe);

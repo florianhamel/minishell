@@ -6,34 +6,34 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 18:03:58 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/03 16:16:58 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/07 13:20:15 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**copy_env(t_data *data)
+char	**copy_env(t_data *data, char **env)
 {
-	char	**env;
+	char	**new_env;
 	int		i;
 
 	i = 0;
-	while (__environ[i])
+	while (env[i])
 		i++;
-	env = malloc(sizeof(char *) * (i + 1));
-	if (!env)
+	new_env = malloc(sizeof(char *) * (i + 1));
+	if (!new_env)
 	{
 		free_null((void **)&data);
 		exit_strerror();
 	}
 	i = 0;
-	while (__environ[i])
+	while (env[i])
 	{
-		env[i] = ft_strdup(__environ[i]);
+		new_env[i] = ft_strdup(env[i]);
 		i++;
 	}
-	env[i] = NULL;
-	return (env);
+	new_env[i] = NULL;
+	return (new_env);
 }
 
 t_var	*init_var_lst(t_data *data)
