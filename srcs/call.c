@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 15:56:46 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/12 13:14:26 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/13 16:06:38 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ int	call_builtin(t_data *data, t_cmd *cmd, t_run run)
 		return (ft_cd(data, args));
 	if (!ft_strncmp("pwd", args[0], 4))
 		return (ft_pwd(data, args));
-	if (!ft_strncmp("export", args[0], 7))
-		return (ft_export(data, args));
-	if (!ft_strncmp("unset", args[0], 6))
-		return (ft_unset(data, args, 1));
-	if (!ft_strncmp("env", args[0], 4))
-		return (ft_env(data, args));
+	// if (!ft_strncmp("export", args[0], 7))
+	// 	return (ft_export(data, args));
+	// if (!ft_strncmp("unset", args[0], 6))
+	// 	return (ft_unset(data, args, 1));
+	// if (!ft_strncmp("env", args[0], 4))
+	// 	return (ft_env(data, args));
 	if (!ft_strncmp("exit", args[0], 5))
 		return (ft_exit(data, args));
 	return (0);
@@ -89,11 +89,13 @@ int	call_builtin(t_data *data, t_cmd *cmd, t_run run)
 void	call_execve(t_data *data, t_cmd *cmd, t_run run)
 {
 	char	**argv;
+	char	**env;
 
+	env = get_env_arg(data);
 	call_setup(data, cmd, run);
 	argv = get_argv(data, cmd);
 	if (argv)
-		if (execve(argv[0], argv, data->env) == ERROR)
+		if (execve(argv[0], argv, get_env_arg(data)) == ERROR)
 			exit_custom(data, NULL, AUTO);
 	free_history(data->history);
 	free_data(data);

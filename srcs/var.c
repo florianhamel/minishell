@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 13:11:08 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 15:25:39 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/13 13:40:21 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,23 @@ char	*get_var_name(t_data *data, int *pos)
 
 char	*get_var_val(t_data *data, char *var_name)
 {
+	t_var	*current;
 	char	*var_val;
 
-	var_val = search_var_lst(data, var_name);
-	if (var_val)
-		return (var_val);
-	var_val = search_env(data, var_name);
+	current = data->var_lst;
+	var_val = NULL;
+	while (current)
+	{
+		if (!ft_strncmp(var_name, current->name, ft_strlen(var_name) + 1) && \
+		current->val)
+		{
+			var_val = ft_strdup(current->val);
+			if (!var_val)
+				exit_custom(data, NULL, AUTO);
+			return (var_val);
+		}
+		current = current->next;
+	}
 	return (var_val);
 }
 

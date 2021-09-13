@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/09 18:10:13 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/13 14:14:23 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,16 +30,13 @@ _SRC_		=	add_var_def.c \
 				cmd_utils.c \
 				cmd.c \
 				cursor_move.c \
+				env.c \
 				free_exit_cmd.c \
 				free_exit_parsing.c \
 				ft_echo.c \
 				ft_exit.c \
-				ft_export.c \
-				ft_env.c \
 				ft_pwd.c \
 				ft_cd.c \
-				ft_unset.c \
-				ft_export_utils.c \
 				gnl.c \
 				heredoc_utils.c \
 				heredoc.c \
@@ -58,9 +55,9 @@ _SRC_		=	add_var_def.c \
 				set.c \
 				str_utils.c \
 				str.c \
-				utils_parsing.c \
+				utils.c \
 				var_def.c \
-				var_utils.c \
+				var_lst.c \
 				var.c \
 
 SRCS		=	$(addprefix $(D_SRCS), $(_SRC_))

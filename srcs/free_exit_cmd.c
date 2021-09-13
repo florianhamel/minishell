@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 14:20:59 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/09 17:59:41 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/13 13:02:07 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	free_var_lst(t_var *var_lst)
 
 void	free_data(t_data *data)
 {
-	ft_free_arr(data->env);
 	free_var_lst(data->var_lst);
 	free_cmd_lst(data);
 	free_null((void **)&(data->str));

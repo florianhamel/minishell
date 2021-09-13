@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/12 13:28:18 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/13 14:12:02 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@
 # define SIMPLE_RIGHT 1
 # define DOUBLE_RIGHT 2
 
+// flag var
+# define EXP 0
+# define LOCAL 1
+# define EXP_NO_DEF 2
+
 // utils values
 # define NO_FD -2
 # define NOT_FOUND -1
@@ -88,6 +93,7 @@ typedef struct s_var
 {
 	char			*name;
 	char			*val;
+	int				flag;
 	struct s_var	*prev;
 	struct s_var	*next;
 }		t_var;
@@ -112,7 +118,6 @@ typedef struct s_cmd
 
 typedef struct s_data
 {
-	char				**env;
 	char				*str;
 	int					status;
 	struct s_var		*var_lst;
@@ -219,6 +224,11 @@ void		cursor_right(int iter);
 void		cursor_left(int iter);
 void		cursor_move(t_read *data);
 
+// env.c
+int			get_len_env(t_data *data);
+char		*get_env_line(t_data *data, t_var*var);
+char		**get_env_arg(t_data *data);
+
 // free_exit_cmd.c
 void		free_var_lst(t_var *var_lst);
 void		free_data(t_data *data);
@@ -279,7 +289,6 @@ void		flip_history(t_history **history);
 t_history	*get_history(int max);
 
 // minishell.c
-void		intro(void);
 t_data		*init_data(char **env);
 void		minishell(char **env);
 
@@ -345,10 +354,9 @@ char		*new_char(t_read *data);
 void		str_mgmt(t_read *data);
 
 /*
-** utils_parsing.c
+** utils.c
 */
-char		**copy_env(t_data *data, char **env);
-t_var		*init_var_lst(t_data *data);
+void		intro(void);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);
@@ -360,10 +368,11 @@ char		*get_var_def_name(t_data *data, int *pos);
 char		*get_var_def_val(t_data *data, int *pos);
 void		set_var_def(t_data *data, int *pos, t_cmd *cmd);
 
-// var_utils.c
-int			find_var_env(t_data *data, char *var_name);
-char		*search_env(t_data *data, char *var_name);
-char		*search_var_lst(t_data *data, char *var_name);
+// var_lst.c
+t_var		*get_new_var(t_data *data, char *env_line);
+void		append_var(t_var *var_lst, t_var *new_var);
+t_var		*init_var_lst(t_data *data);
+t_var		*get_var_lst(t_data *data, char **env);
 
 // var.c
 char		*get_var_name(t_data *data, int *pos);

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:25:22 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/01 13:43:13 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/13 14:03:39 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,21 @@ char	*concat_path_bin(t_data *data, char *path, char *bin)
 
 char	*get_var_path(t_data *data)
 {
-	char	**arr;
-	int		i;
+	char	*var_path;
+	t_var	*current;
 
-	i = 0;
-	while (data->env[i])
+	var_path = NULL;
+	current = data->var_lst;
+	while(current)
 	{
-		arr = ft_split(data->env[i], '=');
-		if (!arr)
-			exit_custom(data, NULL, AUTO);
-		if (!ft_strncmp("PATH", arr[0], 5))
+		if (!ft_strncmp("PATH", current->name, 5) && current->val)
 		{
-			ft_free_arr(arr);
-			return (ft_strdup(&data->env[i][5]));
+			var_path = ft_strdup(current->val);
+			if (!var_path)
+				exit_custom(data, NULL, AUTO);
+			return (ft_strdup(var_path));
 		}
-		ft_free_arr(arr);
-		i++;
+		current = current->next;
 	}
-	return (NULL);
+	return (var_path);
 }

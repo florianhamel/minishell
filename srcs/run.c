@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/12 13:31:49 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/13 16:07:24 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	stop_process(int signum)
 		if (g_data.pid > 0)
 		{
 			kill(g_data.pid, SIGQUIT);
-			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
+			ft_putstr_fd("Quit\n", STDERR_FILENO);
 		}
 	}	
 }
