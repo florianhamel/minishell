@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:25:22 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 14:03:39 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/13 21:15:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*get_var_path(t_data *data)
 			var_path = ft_strdup(current->val);
 			if (!var_path)
 				exit_custom(data, NULL, AUTO);
-			return (ft_strdup(var_path));
+			return (var_path);
 		}
 		current = current->next;
 	}

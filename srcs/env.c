@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 14:03:44 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 16:06:03 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/14 12:20:37 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_len_env(t_data *data)
 	i = 0;
 	while (current)
 	{
-		if (current->flag == EXP)
+		if (current->flag == ENV)
 			i++;
 		current = current->next;
 	}
@@ -44,7 +44,7 @@ char	*get_env_line(t_data *data, t_var *var)
 	return (env_line);
 }
 
-char	**get_env_arg(t_data *data)
+char	**get_env(t_data *data)
 {
 	t_var	*current;
 	char	**env;
@@ -57,7 +57,7 @@ char	**get_env_arg(t_data *data)
 	i = 0;
 	while (current)
 	{
-		if (current->flag == EXP)
+		if (current->flag == ENV)
 		{
 			env[i] = get_env_line(data, current);
 			i++;

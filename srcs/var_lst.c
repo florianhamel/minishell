@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 12:45:54 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 12:52:37 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/14 12:29:01 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ t_var	*get_new_var(t_data *data, char *env_line)
 	}
 	var->prev = NULL;
 	var->next = NULL;
-	var->flag = EXP;
 	var->name = NULL;
 	var->val = NULL;
+	var->flag = ENV;
 	i = 0;
 	while (env_line[i] && env_line[i] != '=')
 		var->name = add_char(data, var->name, env_line[i++]);
@@ -61,7 +61,6 @@ t_var	*init_var_lst(t_data *data)
 	}
 	var->prev = NULL;
 	var->next = NULL;
-	var->flag = LOCAL;
 	var->name = malloc(2);
 	if (!var->name)
 	{
@@ -71,6 +70,7 @@ t_var	*init_var_lst(t_data *data)
 	var->name[0] = '?';
 	var->name[1] = '\0';
 	var->val = ft_itoa(0);
+	var->flag = SPECIAL;
 	return (var);
 }
 

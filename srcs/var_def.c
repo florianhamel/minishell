@@ -6,28 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 22:05:40 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/09 17:26:01 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/14 10:20:50 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_var_def(char *str)
-{
-	int	i;
-
-	i = 1;
-	if (!str[0] || !ft_isalpha(str[0]))
-		return (0);
-	while ((str[i] && ft_isalnum(str[i]) && !ft_is_ws(str[i])) || \
-	str[i] == '=')
-	{
-		if (str[i] == '=')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 char	*get_var_def_name(t_data *data, int *pos)
 {
@@ -64,24 +47,24 @@ char	*get_var_def_val(t_data *data, int *pos)
 
 void	set_var_def(t_data *data, int *pos, t_cmd *cmd)
 {
+	char	*name;
+	char	*val;
 	t_var	*current;
-	t_var	*var_def;
 
-	var_def = malloc(sizeof(t_var));
-	if (!var_def)
-		exit_custom(data, NULL, AUTO);
-	var_def->prev = NULL;
-	var_def->next = NULL;
-	var_def->name = get_var_def_name(data, pos);
-	var_def->val = get_var_def_val(data, pos);
-	if (!cmd->var_def_lst)
-		cmd->var_def_lst = var_def;
-	else
+	name = get_var_def_name(data, pos);
+	val = get_var_def_val(data, pos);
+	current = data->var_lst;
+	while (current && ft_strncmp(name, current->name, ft_strlen(name) + 1))
+		current = current->next;
+	if (current && (current->flag == EXP_NO_DEF || current->flag == EXP_DEF))
 	{
-		current = cmd->var_def_lst;
-		while (current->next)
-			current = current->next;
-		var_def->prev = current;
-		current->next = var_def;
+		current->flag = 
+		modify_var_def(data, cmd, name, val);
 	}
+	else if (current && current->flag == LOCAL)
+		modify_var_def(data, cmd, name, val, LOCAL);
+	else
+		create_var(data, name, val, LOCAL);
+	free_null((void **)&name);
+	free_null((void **)&val);
 }

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 16:07:24 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/14 09:28:03 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,6 @@ void	run(t_data *data)
 	current = data->cmd_lst;
 	while (current)
 	{
-		if (current->var_def_lst && !current->args && \
-		!current->prev && !current->next)
-			add_var_def_lst(data, current->var_def_lst);
 		if (is_builtin(data, current))
 			fd_pipe = run_builtin(data, current, fd_pipe);
 		else

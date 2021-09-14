@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:56:07 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/09 18:00:06 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/14 12:24:51 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_cmd	*new_elem_cmd(t_data *data)
 	elem->in_lst = NULL;
 	elem->out_lst = NULL;
 	elem->args = NULL;
-	elem->var_def_lst = NULL;
 	elem->prev = NULL;
 	elem->next = NULL;
 	return (elem);
@@ -81,7 +80,6 @@ void	free_cmd_lst(t_data *data)
 		cmd = cmd->prev;
 	while (cmd)
 	{
-		free_var_def_lst(cmd->var_def_lst);
 		next = cmd->next;
 		free_redir_lst(cmd->in_lst);
 		cmd->in_lst = NULL;
@@ -146,9 +144,7 @@ t_cmd	*get_cmd_lst(t_data *data)
 		while (data->str[i] && data->str[i] != '|')
 		{
 			i += skip_ws(&data->str[i]);
-			if (is_var_def(&data->str[i]))
-				set_var_def(data, &i, cmd);
-			else if (is_redir(data->str[i]))
+			if (is_redir(data->str[i]))
 				set_redir(data, &i, cmd);
 			else
 				set_args(data, &i, cmd);

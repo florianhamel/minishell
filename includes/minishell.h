@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/13 14:12:02 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/14 13:08:59 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,8 @@
 # define DOUBLE_RIGHT 2
 
 // flag var
-# define EXP 0
-# define LOCAL 1
-# define EXP_NO_DEF 2
+# define ENV 0
+# define SPECIAL 1
 
 // utils values
 # define NO_FD -2
@@ -111,7 +110,6 @@ typedef struct s_cmd
 	struct s_redir	*in_lst;
 	struct s_redir	*out_lst;
 	char			*args;
-	t_var			*var_def_lst;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }		t_cmd;
@@ -121,6 +119,7 @@ typedef struct s_data
 	char				*str;
 	int					status;
 	struct s_var		*var_lst;
+	struct s_var		*var_status;
 	struct s_cmd		*cmd_lst;
 	struct s_history	*history;
 }		t_data;
@@ -152,21 +151,21 @@ typedef struct	s_exp
 	int 	j;
 }				t_exp;
 
-// add_var_def.c
-void		append_var_def(t_var *var_def, t_data *data);
-void		add_var_def_lst(t_data *data, t_var *var_def_lst);
-void		free_var_def_lst(t_var *var_def_lst);
+// bin_utils.c
+int			check_slash_in(char *name);
+int			is_direct_path(char *name);
+char		*concat_path_bin(t_data *data, char *path, char *bin);
+char		*get_var_path(t_data *data);
 
 // bin.c
 char		*get_path_bin(t_data *data, char *name, char *var_path);
 char		*get_bin(t_data *data, char *name);
 char		**get_argv(t_data *data, t_cmd *cmd);
 
-// bin_utils.c
-int			check_slash_in(char *name);
-int			is_direct_path(char *name);
-char		*concat_path_bin(t_data *data, char *path, char *bin);
-char		*get_var_path(t_data *data);
+// builtins.c
+int			is_option(char *str);
+void		error_option(char *arg, char *cmd, int *status);
+void		error_arg(char *arg, char *cmd, int *status);
 
 // call.c
 void		dup2_close(int new_fd, int old_fd);
@@ -182,10 +181,9 @@ int		ft_env(t_data *data, char **args);
 int		ft_pwd(t_data *data, char **args);
 int		ft_exit(t_data *data, char **args);
 int		is_char(const char *s, char c);
-void    ft_add_env(t_data *data, char **tab);
+void	ft_add_env(t_data *data, char **tab);
 void	ft_cpy_export(t_data *data, char *name, char *val);
 int		ft_cd(t_data *data, char **path);
-int		ft_unset(t_data *data, char **args, int i);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_unset_env(t_data *data, char **args, int i);
 int		ft_error(char **args);
@@ -227,7 +225,7 @@ void		cursor_move(t_read *data);
 // env.c
 int			get_len_env(t_data *data);
 char		*get_env_line(t_data *data, t_var*var);
-char		**get_env_arg(t_data *data);
+char		**get_env(t_data *data);
 
 // free_exit_cmd.c
 void		free_var_lst(t_var *var_lst);
@@ -245,6 +243,22 @@ void		exit_parsing(t_read *data);
 
 // ft_echo.c
 int			ft_echo(char **args);
+
+// ft_export_utils.c
+int			is_var_def(char *arg);
+int			is_valid_var(char *arg);
+void		add_var_alpha(t_data *data, t_var *var);
+void		error_identifier(char *arg, char *cmd, int *status);
+
+// ft_export.c
+void		modify_var(t_data *data, t_var *var, char *val);
+void		create_var(t_data *data, char *name, char *val);
+void		export_def(t_data *data, char *arg);
+int			ft_export(t_data *data, char **args);
+
+// ft_unset.c
+void		unset_var(t_data *data, char *arg);
+int			ft_unset(t_data *data, char **args);
 
 // heredoc_utils.c
 void		stop_heredoc(t_read *heredoc);
@@ -360,13 +374,6 @@ void		intro(void);
 ssize_t		ft_write(int fd, const void *buf, size_t nbyte);
 void		ws_fd(size_t nb, int fd);
 char		*new_alloc(char *str, size_t size, size_t pos);
-
-// var_def.c
-void		add_var_def_lst(t_data *data, t_var *var_def_lst);
-int			is_var_def(char *str);
-char		*get_var_def_name(t_data *data, int *pos);
-char		*get_var_def_val(t_data *data, int *pos);
-void		set_var_def(t_data *data, int *pos, t_cmd *cmd);
 
 // var_lst.c
 t_var		*get_new_var(t_data *data, char *env_line);
