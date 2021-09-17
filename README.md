@@ -10,6 +10,6 @@ To run it:
 - Use `make` and `./minishell` inside the repository
 - You can use side arrows to navigate through the command line and up/down arrows to navigate through the history
 - `ctrl` + `C` and `ctrl` + `D` work the same as in bash
-- The builtins `exit` `cd ` `pwd` `export` `unset` `env` and `echo` are to be implemented very soon 
+- The implemented builtins are `exit` `cd ` `pwd` `export` `unset` `env` and `echo` 
 
 minishell is a 42 project.
