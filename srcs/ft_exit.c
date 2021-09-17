@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 12:16:53 by Fayel-ha          #+#    #+#             */
-/*   Updated: 2021/09/16 13:25:41 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 00:05:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	exit_no_pipe(t_data *data, char **args, int *status)
 	}
 	if (args[1] && !is_numeric(args[1]))
 		error_numeric(args[1], status);
-	*status = ft_atoi(args[1]);
+	else if (args[1])
+		*status = ft_atoi(args[1]);
 	free_exit(data, args, *status);
 }
 
