@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:25:22 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 21:15:34 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/16 16:57:40 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*get_var_path(t_data *data)
 
 	var_path = NULL;
 	current = data->var_lst;
-	while(current)
+	while (current)
 	{
 		if (!ft_strncmp("PATH", current->name, 5) && current->val)
 		{

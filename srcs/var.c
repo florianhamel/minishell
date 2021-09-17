@@ -6,30 +6,30 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 13:11:08 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 13:40:21 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/17 21:45:20 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_name(t_data *data, int *pos)
+char	*get_var_name(t_data *data, char *str, int *pos)
 {
 	char	*var_name;
 
 	(*pos)++;
 	var_name = NULL;
-	if (data->str[*pos] == '?')
+	if (str[*pos] == '?')
 	{
 		var_name = add_char(data, var_name, '?');
 		(*pos)++;
 	}
 	else
 	{
-		while (data->str[*pos] && \
-		(ft_isalnum(data->str[*pos]) || data->str[*pos] == '_') && \
-		!ft_is_ws(data->str[*pos]))
+		while (str[*pos] && \
+		(ft_isalnum(str[*pos]) || str[*pos] == '_') && \
+		!ft_is_ws(str[*pos]))
 		{
-			var_name = add_char(data, var_name, data->str[*pos]);
+			var_name = add_char(data, var_name, str[*pos]);
 			(*pos)++;
 		}
 	}
@@ -58,12 +58,12 @@ char	*get_var_val(t_data *data, char *var_name)
 	return (var_val);
 }
 
-char	*get_var(t_data *data, int *pos)
+char	*get_var(t_data *data, char *str, int *pos)
 {
 	char	*var_name;
 	char	*var_val;
 
-	var_name = get_var_name(data, pos);
+	var_name = get_var_name(data, str, pos);
 	if (!var_name)
 	{
 		var_val = malloc(2);

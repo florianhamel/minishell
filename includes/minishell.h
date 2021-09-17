@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/14 13:08:59 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/17 23:35:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <limits.h> 
+# include <dirent.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -63,6 +64,7 @@
 # define SPECIAL 1
 
 // utils values
+# define PATH_MAX_B 4096
 # define NO_FD -2
 # define NOT_FOUND -1
 # define ERROR -1
@@ -139,17 +141,9 @@ typedef struct s_sig
 	int		pid;
 }		t_sig;
 
-typedef struct	s_exp
-{
-	char 	**tab;
-	char 	**tab2;
-	char	*name;
-	char	*val;
-	char	*tmp1;
-	int		count;
-	int 	i;
-	int 	j;
-}				t_exp;
+// args.c
+char		**realloc_args(t_data *data, char **args, int index);
+char		**get_args(t_data *data, t_cmd *cmd);
 
 // bin_utils.c
 int			check_slash_in(char *name);
@@ -160,7 +154,7 @@ char		*get_var_path(t_data *data);
 // bin.c
 char		*get_path_bin(t_data *data, char *name, char *var_path);
 char		*get_bin(t_data *data, char *name);
-char		**get_argv(t_data *data, t_cmd *cmd);
+char		**get_argv(t_data *data, char **args);
 
 // builtins.c
 int			is_option(char *str);
@@ -174,30 +168,11 @@ void		call_setup(t_data *data, t_cmd *cmd, t_run run);
 int			call_builtin(t_data *data, t_cmd *cmd, t_run run);
 void		call_execve(t_data *data, t_cmd *cmd, t_run run);
 
-// ft_pwd.c // ft_echo.c // ft_exit.c // ft_export.c // ft_env.c
-void	ft_mallocb(t_data *data, char *val, char *name);
-int		ft_export(t_data *data, char **args);
-int		ft_env(t_data *data, char **args);
-int		ft_pwd(t_data *data, char **args);
-int		ft_exit(t_data *data, char **args);
-int		is_char(const char *s, char c);
-void	ft_add_env(t_data *data, char **tab);
-void	ft_cpy_export(t_data *data, char *name, char *val);
-int		ft_cd(t_data *data, char **path);
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_unset_env(t_data *data, char **args, int i);
-int		ft_error(char **args);
-int		ft_error_uns(char **args, int i);
-int     split_tab(char **args, t_exp *tmp);
-int     loop_exp(t_data *data, char **args, t_exp *tmp);
-int     ft_continue(t_data *data, char **args, t_exp *tmp);
-void	ft_free_unset(t_var *tmp);
-void	ft_free_exit(t_data *data, char **args, int count);
-
 // cmd_checkers.c
 int			is_redir(int c);
 int			is_quote(int c);
 int			is_closed_quote(t_data *data, int *pos);
+int			check_quote(char *str, int pos);
 int			is_end_arg(int c);
 
 // cmd_utils.c
@@ -206,7 +181,6 @@ char		*add_char(t_data *data, char *str, int c);
 char		*concat_str(t_data *data, char *s1, char *s2);
 
 // cmd.c
-char		*get_arg(t_data *data, int *pos);
 t_cmd		*new_elem_cmd(t_data *data);
 void		append_cmd(t_cmd **cmd_lst, t_cmd *cmd);
 void		free_cmd_lst(t_data *data);
@@ -241,12 +215,32 @@ void		exit_strerror(void);
 void		free_parsing(t_read *data);
 void		exit_parsing(t_read *data);
 
+// ft_cd.c
+void		edit_env_value(t_var *env, char *new_pwd, char *ex_pwd);
+int			ft_cd(t_data *data, char **path);
+
 // ft_echo.c
 int			ft_echo(char **args);
+
+// ft_env.c
+int			ft_env(t_data *data, char **args);
+
+// ft_exit_utils.c
+int			check_nb_args(char **args);
+void		error_nb_args(int *status);
+int			is_numeric(char *arg);
+void		error_numeric(char *arg, int *status);
+
+// ft_exit.c
+void		free_exit(t_data *data, char **args, int status);
+void		exit_no_pipe(t_data *data, char **args, int *status);
+void		exit_pipe(char **args, int *status);
+int			ft_exit(t_data *data, char **args);
 
 // ft_export_utils.c
 int			is_var_def(char *arg);
 int			is_valid_var(char *arg);
+t_var		*skip_status_var(t_data *data);
 void		add_var_alpha(t_data *data, t_var *var);
 void		error_identifier(char *arg, char *cmd, int *status);
 
@@ -255,6 +249,9 @@ void		modify_var(t_data *data, t_var *var, char *val);
 void		create_var(t_data *data, char *name, char *val);
 void		export_def(t_data *data, char *arg);
 int			ft_export(t_data *data, char **args);
+
+// ft_pwd.c
+int			ft_pwd(char **args);
 
 // ft_unset.c
 void		unset_var(t_data *data, char *arg);
@@ -303,6 +300,7 @@ void		flip_history(t_history **history);
 t_history	*get_history(int max);
 
 // minishell.c
+void		check_tmp_dir(void);
 t_data		*init_data(char **env);
 void		minishell(char **env);
 
@@ -312,9 +310,9 @@ int			get_outfile(t_data *data, t_cmd *cmd);
 
 // quotes.c
 char		*get_quote_word(t_data *data, int *pos);
-char		*get_simple_quote(t_data *data, int *pos);
-char		*get_double_quote(t_data *data, int *pos);
-char		*get_quote(t_data *data, int *pos);
+char		*get_simple_quote(t_data *data, char *str, int *pos);
+char		*get_double_quote(t_data *data, char *str, int *pos);
+char		*get_quote(t_data *data, char *str, int *pos);
 
 /*
 ** read_utils.c
@@ -340,16 +338,20 @@ int			run_execve(t_data *data, t_cmd *cmd, int fd_pipe);
 void		run(t_data *data);
 
 // set_utils.c
-char		*get_word(t_data *data, int *pos);
 int			get_flag_in(t_data *data, int *pos);
 int			get_flag_out(t_data *data, int *pos);
 void		set_redir_in(t_data *data, int *pos, t_cmd *cmd);
 void		set_redir_out(t_data *data, int *pos, t_cmd *cmd);
 
+// set_utils2.c
+char		*get_file_word(t_data *data, int *pos);
+char		*get_word(t_data *data, int *pos);
+void		free_redir_lst(t_redir *redir);
+
+
 // set.c
 int			syntax_error(t_data *data, int flag);
 int			check_syntax_error(t_data *data);
-void		free_redir_lst(t_redir *redir);
 void		set_redir(t_data *data, int *pos, t_cmd *cmd);
 void		set_args(t_data *data, int *pos, t_cmd *cmd);
 
@@ -382,8 +384,8 @@ t_var		*init_var_lst(t_data *data);
 t_var		*get_var_lst(t_data *data, char **env);
 
 // var.c
-char		*get_var_name(t_data *data, int *pos);
+char		*get_var_name(t_data *data, char *str, int *pos);
 char		*get_var_val(t_data *data, char *var_name);
-char		*get_var(t_data *data, int *pos);
+char		*get_var(t_data *data, char *str, int *pos);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 19:31:49 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/09 18:41:20 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/14 13:23:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_echo(char **args)
 	}
 	if (ft_strncmp(args[1], "-n", 3) == 0)
 		return (0);
-	ft_putstr_fd("\n", 1);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 	ft_free_arr(args);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 16:09:57 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 16:58:50 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/16 16:56:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	ft_env(t_data *data, char **args)
 {
-	char	**env;
 	int		status;
+	char	**env;
 	int		i;
 
-	env = get_env(data);
 	status = 0;
+	env = get_env(data);
 	i = 0;
 	if (args[1] && is_option(args[1]))
 		error_option(args[1], "env", &status);

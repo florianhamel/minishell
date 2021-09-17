@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 18:19:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/14 13:05:50 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/16 17:07:00 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,23 @@ int	is_valid_var(char *arg)
 	return (1);
 }
 
+t_var	*skip_status_var(t_data *data)
+{
+	t_var	*current;
+
+	current = data->var_lst;
+	if (current->flag == SPECIAL && current->next)
+		current = current->next;
+	return (current);
+}
+
 void	add_var_alpha(t_data *data, t_var *var)
 {
 	t_var	*current;
 	t_var	*tmp;
 	int		i;
 
-	current = data->var_lst;
-	if (current->flag == SPECIAL && current->next)
-		current = current->next;
+	current = skip_status_var(data);
 	while (current->next)
 	{
 		i = 0;
@@ -81,5 +89,5 @@ void	error_identifier(char *arg, char *cmd, int *status)
 	ft_putstr_fd(": '", STDERR_FILENO);
 	ft_putstr_fd(arg, STDERR_FILENO);
 	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-	*status = 1;	
+	*status = 1;
 }

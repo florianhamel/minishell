@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:07 by user42            #+#    #+#             */
-/*   Updated: 2021/09/06 15:30:12 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/16 13:13:55 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	add_cmd(t_read *data, t_history **history)
 {
 	int			fd;
 
-	fd = open(".minishell_history", \
+	fd = open("/tmp/.minishell_history", \
 	O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (fd == ERROR)
 		exit_strerror();

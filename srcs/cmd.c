@@ -6,36 +6,11 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:56:07 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/14 12:24:51 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/17 22:01:30 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*get_arg(t_data *data, int *pos)
-{
-	char	*arg;
-	char	*var_val;
-
-	arg = NULL;
-	var_val = NULL;
-	*pos += skip_ws(&data->str[*pos]);
-	while (data->str[*pos] && !ft_is_ws(data->str[*pos]) && \
-	!is_redir(data->str[*pos]) && data->str[*pos] != '|')
-	{
-		if (data->str[*pos] == '$')
-		{
-			var_val = get_var(data, pos);
-			if (var_val)
-				arg = concat_str(data, arg, var_val);
-		}
-		else if (is_quote(data->str[*pos]) && is_closed_quote(data, pos))
-			arg = concat_str(data, arg, get_quote(data, pos));
-		else
-			arg = add_char(data, arg, data->str[(*pos)++]);
-	}
-	return (arg);
-}
 
 t_cmd	*new_elem_cmd(t_data *data)
 {
@@ -90,43 +65,6 @@ void	free_cmd_lst(t_data *data)
 		cmd = next;
 	}
 	data->cmd_lst = NULL;
-}
-
-// fonction de test
-
-void	print_redir_lst(t_redir *redir)
-{
-	if (!redir)
-	{
-		printf("%p$\n", redir);
-		return ;
-	}
-	while (redir)
-	{
-		printf("flag: %d$\n", redir->flag);
-		printf("word: %s$\n", redir->word);
-		printf("\n");
-		redir = redir->next;
-	}
-}
-
-void	print_cmd(t_data *data)
-{
-	t_cmd	*current;
-
-	current = data->cmd_lst;
-	while (current)
-	{
-		printf("----------ELEM----------\n");
-		printf("***** in_lst ******\n");
-		print_redir_lst(current->in_lst);
-		printf("***** out_lst ******\n");
-		print_redir_lst(current->out_lst);
-		printf("arg: %s$\n", current->args);
-		printf("prev: %p$\n", current->prev);
-		printf("next: %p$\n", current->next);
-		current = current->next;
-	}
 }
 
 t_cmd	*get_cmd_lst(t_data *data)

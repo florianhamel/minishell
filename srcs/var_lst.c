@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 12:45:54 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/14 12:29:01 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/15 12:23:45 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,20 @@ t_var	*get_var_lst(t_data *data, char **env)
 {
 	t_var	*var_lst;
 	t_var	*new_var;
-	int	i;
+	int		shlvl;
+	int		i;
 
 	i = 0;
 	var_lst = init_var_lst(data);
 	while (env[i])
 	{
 		new_var = get_new_var(data, env[i]);
+		if (!ft_strncmp("SHLVL", new_var->name, 6))
+		{
+			shlvl = ft_atoi(new_var->val);
+			free_null((void **)&new_var->val);
+			new_var->val = ft_itoa(shlvl + 1);
+		}
 		append_var(var_lst, new_var);
 		i++;
 	}

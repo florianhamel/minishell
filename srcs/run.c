@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/14 09:28:03 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/16 16:57:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern t_sig	g_data;
 
-int		get_status_error(int signum)
+int	get_status_error(int signum)
 {
 	if (signum == SIGINT)
 		return (130);

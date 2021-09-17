@@ -6,13 +6,26 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 01:51:19 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/13 16:02:59 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/16 16:28:56 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_sig	g_data;
+
+void	check_tmp_dir(void)
+{
+	DIR	*dir;
+
+	dir = opendir("/tmp");
+	if (dir == NULL)
+	{
+		ft_putstr_fd("minishell: '/tmp' was not found\n", STDERR_FILENO);
+		exit(1);
+	}
+	closedir(dir);
+}
 
 t_data	*init_data(char **env)
 {
@@ -34,6 +47,7 @@ void	minishell(char **env)
 	t_data		*data;
 	t_read		*data_parsing;
 
+	check_tmp_dir();
 	data = init_data(env);
 	g_data.data = data;
 	if (signal(SIGINT, stop_process) == SIG_ERR)

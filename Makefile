@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/14 13:07:25 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/17 22:11:04 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ D_OBJS		=	objs/
 
 D_SRCS		=	srcs/
 
-_SRC_		=	bin_utils.c \
+_SRC_		=	args.c \
+				bin_utils.c \
 				bin.c \
 				builtins.c \
 				call.c \
@@ -36,6 +37,7 @@ _SRC_		=	bin_utils.c \
 				ft_cd.c \
 				ft_echo.c \
 				ft_env.c \
+				ft_exit_utils.c \
 				ft_exit.c \
 				ft_export_utils.c \
 				ft_export.c \
@@ -56,6 +58,7 @@ _SRC_		=	bin_utils.c \
 				read.c \
 				run.c \
 				set_utils.c \
+				set_utils2.c \
 				set.c \
 				str_utils.c \
 				str.c \

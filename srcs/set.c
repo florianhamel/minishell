@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/06 16:40:23 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/17 23:28:28 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,6 @@ int	check_syntax_error(t_data *data)
 	return (SUCCESS);
 }
 
-void	free_redir_lst(t_redir *redir)
-{
-	t_redir	*next;
-
-	if (!redir)
-		return ;
-	while (redir->prev)
-		redir = redir->prev;
-	while (redir)
-	{
-		next = redir->next;
-		free_null((void **)&redir->word);
-		free_null((void **)&redir);
-		redir = next;
-	}
-}
-
 void	set_redir(t_data *data, int *pos, t_cmd *cmd)
 {
 	if (data->str[*pos] == '<')
@@ -86,9 +69,10 @@ void	set_args(t_data *data, int *pos, t_cmd *cmd)
 	data->str[*pos] != '|')
 	{
 		if (data->str[*pos] == '$')
-			cmd->args = concat_str(data, cmd->args, get_var(data, pos));
-		else if (is_quote(data->str[*pos]) && is_closed_quote(data, pos))
-			cmd->args = concat_str(data, cmd->args, get_quote(data, pos));
+		{	
+			cmd->args = concat_str(data, cmd->args, \
+			get_var(data, data->str, pos));
+		}
 		else
 			cmd->args = add_char(data, cmd->args, data->str[(*pos)++]);
 	}
