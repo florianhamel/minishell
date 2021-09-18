@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/17 23:35:05 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 11:25:52 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,8 +350,6 @@ void		free_redir_lst(t_redir *redir);
 
 
 // set.c
-int			syntax_error(t_data *data, int flag);
-int			check_syntax_error(t_data *data);
 void		set_redir(t_data *data, int *pos, t_cmd *cmd);
 void		set_args(t_data *data, int *pos, t_cmd *cmd);
 
@@ -368,6 +366,13 @@ char		*new_del(t_read *data);
 char		*new_insert(t_read *data);
 char		*new_char(t_read *data);
 void		str_mgmt(t_read *data);
+
+// syntax_error.c
+int			syntax_error(t_data *data, int flag);
+int			skip_quotes(char *str);
+int			check_redir_error(char *str);
+int			check_pipe_error(char *str);
+int			check_syntax_error(t_data *data);
 
 /*
 ** utils.c

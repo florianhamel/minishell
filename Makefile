@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/17 22:11:04 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/18 11:25:40 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,7 @@ _SRC_		=	args.c \
 				set.c \
 				str_utils.c \
 				str.c \
+				syntax_error.c \
 				utils.c \
 				var_lst.c \
 				var.c \

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 14:03:44 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/14 12:20:37 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 11:05:50 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ char	*get_env_line(t_data *data, t_var *var)
 
 	env_line = NULL;
 	i = 0;
-	while (var->name[i])
+	while (var->name && var->name[i])
 		env_line = add_char(data, env_line, var->name[i++]);
 	env_line = add_char(data, env_line, '=');
 	i = 0;
-	while (var->val[i])
+	while (var->val && var->val[i])
 		env_line = add_char(data, env_line, var->val[i++]);
 	return (env_line);
 }

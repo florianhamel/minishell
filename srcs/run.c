@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/16 16:57:05 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 10:54:55 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,10 @@ void	run(t_data *data)
 	t_cmd	*current;
 
 	if (check_syntax_error(data) == ERROR)
+	{
+		free_null((void **)&data->str);
 		return ;
+	}
 	data->cmd_lst = get_cmd_lst(data);
 	fd_pipe = NO_FD;
 	current = data->cmd_lst;
