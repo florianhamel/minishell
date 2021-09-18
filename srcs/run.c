@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/18 10:54:55 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 11:37:31 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern t_sig	g_data;
+extern int	g_pid;
 
 int	get_status_error(int signum)
 {
@@ -27,17 +27,17 @@ void	stop_process(int signum)
 {
 	if (signum == SIGINT)
 	{
-		if (g_data.pid > 0)
+		if (g_pid > 0)
 		{	
-			kill(g_data.pid, SIGINT);
+			kill(g_pid, SIGINT);
 			ft_putchar_fd('\n', STDERR_FILENO);
 		}
 	}
 	else if (signum == SIGQUIT)
 	{
-		if (g_data.pid > 0)
+		if (g_pid > 0)
 		{
-			kill(g_data.pid, SIGQUIT);
+			kill(g_pid, SIGQUIT);
 			ft_putstr_fd("Quit\n", STDERR_FILENO);
 		}
 	}	
@@ -73,15 +73,15 @@ int	run_execve(t_data *data, t_cmd *cmd, int fd_pipe)
 	run.fd_out = NO_FD;
 	if (pipe(run.fd) == ERROR)
 		exit_custom(data, NULL, AUTO);
-	g_data.pid = fork();
-	if (g_data.pid == ERROR)
+	g_pid = fork();
+	if (g_pid == ERROR)
 		exit_custom(data, NULL, AUTO);
-	if (g_data.pid == CHILD)
+	if (g_pid == CHILD)
 		call_execve(data, cmd, run);
 	if (fd_pipe != NO_FD)
 		close(fd_pipe);
 	close(run.fd[1]);
-	waitpid(g_data.pid, &run.status, 0);
+	waitpid(g_pid, &run.status, 0);
 	if (WIFSIGNALED(run.status))
 		data->status = get_status_error(WTERMSIG(run.status));
 	else

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/18 11:25:52 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 11:37:40 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,12 +134,6 @@ typedef struct s_run
 	int	fd_out;
 	int	status;
 }		t_run;
-
-typedef struct s_sig
-{
-	t_data	*data;
-	int		pid;
-}		t_sig;
 
 // args.c
 char		**realloc_args(t_data *data, char **args, int index);

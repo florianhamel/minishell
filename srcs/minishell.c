@@ -6,13 +6,13 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 01:51:19 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/16 16:28:56 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 11:35:59 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_sig	g_data;
+int		g_pid;
 
 void	check_tmp_dir(void)
 {
@@ -49,7 +49,6 @@ void	minishell(char **env)
 
 	check_tmp_dir();
 	data = init_data(env);
-	g_data.data = data;
 	if (signal(SIGINT, stop_process) == SIG_ERR)
 		exit_custom(data, NULL, AUTO);
 	if (signal(SIGQUIT, stop_process) == SIG_ERR)
