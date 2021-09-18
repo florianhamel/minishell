@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 19:31:49 by Fayel-ha          #+#    #+#             */
-/*   Updated: 2021/09/18 11:53:05 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:49:16 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	ft_echo(char **args)
 	int	i;
 
 	i = 1;
+	
 	if (args[1] && !ft_strncmp(args[1], "-n", 3))
 		i++;
 	while (args[i])

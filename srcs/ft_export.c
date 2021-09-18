@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 17:38:56 by Fayel-ha          #+#    #+#             */
-/*   Updated: 2021/09/18 11:44:05 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 15:15:17 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ int	ft_export(t_data *data, char **args)
 	}
 	while (args[i])
 	{
-		if (is_var_def(args[i]))
+		if (!data->cmd_lst->next && is_var_def(args[i]))
 			export_var_def(data, args[i]);
-		else if (!is_valid_var(args[i]))
+		else if (!is_valid_var(args[i]) && !is_var_def(args[i]))
 			error_identifier(args[i], "export", &status);
 		i++;
 	}

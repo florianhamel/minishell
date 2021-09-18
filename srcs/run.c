@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 12:48:04 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/18 11:37:31 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:29:56 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,17 @@ void	stop_process(int signum)
 int	run_builtin(t_data *data, t_cmd *cmd, int fd_pipe)
 {
 	t_run	run;
-	int		fd_in;
-	int		fd_out;
 
-	fd_in = dup(STDIN_FILENO);
-	fd_out = dup(STDOUT_FILENO);
 	run.fd_pipe = fd_pipe;
-	run.fd_in = NO_FD;
-	run.fd_out = NO_FD;
+	run.fd_in = dup(STDIN_FILENO);
+	run.fd_out = dup(STDOUT_FILENO);
 	if (pipe(run.fd) == ERROR)
 		exit_custom(data, NULL, AUTO);
 	data->status = call_builtin(data, cmd, run);
 	if (fd_pipe != NO_FD)
 		close(fd_pipe);
-	dup2(fd_in, STDIN_FILENO);
-	dup2(fd_out, STDOUT_FILENO);
+	dup2(run.fd_in, STDIN_FILENO);
+	dup2(run.fd_out, STDOUT_FILENO);
 	return (run.fd[0]);
 }
 
