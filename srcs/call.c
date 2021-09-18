@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 15:56:46 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/17 23:34:19 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 12:52:30 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ int	is_builtin(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-void	call_setup(t_data *data, t_cmd *cmd, t_run run)
+int	call_setup(t_data *data, t_cmd *cmd, t_run run, int flag)
 {
-	run.fd_in = get_infile(data, cmd);
-	run.fd_out = get_outfile(data, cmd);
+	if (open_files(data, cmd, &run, flag) == ERROR)
+		return (ERROR);
 	if (run.fd_pipe != NO_FD)
 		dup2_close(run.fd_pipe, STDIN_FILENO);
 	if (cmd->next)
@@ -59,6 +59,7 @@ void	call_setup(t_data *data, t_cmd *cmd, t_run run)
 		dup2_close(run.fd_in, STDIN_FILENO);
 	if (run.fd_out != NO_FD)
 		dup2_close(run.fd_out, STDOUT_FILENO);
+	return (SUCCESS);
 }
 
 int	call_builtin(t_data *data, t_cmd *cmd, t_run run)
@@ -67,7 +68,8 @@ int	call_builtin(t_data *data, t_cmd *cmd, t_run run)
 
 	if (!cmd->args)
 		return (0);
-	call_setup(data, cmd, run);
+	if (call_setup(data, cmd, run, BUILTIN) == ERROR)
+		return (data->status);
 	args = get_args(data, cmd);
 	if (!ft_strncmp("echo", args[0], 5))
 		return (ft_echo(args));
@@ -95,7 +97,7 @@ void	call_execve(t_data *data, t_cmd *cmd, t_run run)
 	args = get_args(data, cmd);
 	argv = get_argv(data, args);
 	env = get_env(data);
-	call_setup(data, cmd, run);
+	call_setup(data, cmd, run, FORK);
 	if (argv)
 		if (execve(argv[0], argv, env) == ERROR)
 			exit_custom(data, NULL, AUTO);

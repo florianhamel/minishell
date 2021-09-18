@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/18 11:37:40 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 12:49:22 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@
 // flag var
 # define ENV 0
 # define SPECIAL 1
+# define BUILTIN 0
+# define FORK 1
 
 // utils values
 # define PATH_MAX_B 4096
@@ -158,7 +160,7 @@ void		error_arg(char *arg, char *cmd, int *status);
 // call.c
 void		dup2_close(int new_fd, int old_fd);
 int			is_builtin(t_data *data, t_cmd *cmd);
-void		call_setup(t_data *data, t_cmd *cmd, t_run run);
+int			call_setup(t_data *data, t_cmd *cmd, t_run run, int flag);
 int			call_builtin(t_data *data, t_cmd *cmd, t_run run);
 void		call_execve(t_data *data, t_cmd *cmd, t_run run);
 
@@ -299,8 +301,11 @@ t_data		*init_data(char **env);
 void		minishell(char **env);
 
 // open.c
+void		error_file(char *word);
+void		error_opening(t_data *data, int flag);
 int			get_infile(t_data *data, t_cmd *cmd);
-int			get_outfile(t_data *data, t_cmd *cmd);
+int			get_outfile(t_cmd *cmd);
+int			open_files(t_data *data, t_cmd *cmd, t_run *run, int flag);
 
 // quotes.c
 char		*get_quote_word(t_data *data, int *pos);
