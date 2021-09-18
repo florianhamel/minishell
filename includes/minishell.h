@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/18 12:49:22 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 17:07:48 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ void		add_var_alpha(t_data *data, t_var *var);
 void		error_identifier(char *arg, char *cmd, int *status);
 
 // ft_export.c
+void		export_env(t_data *data);
 void		modify_var(t_data *data, t_var *var, char *val);
 void		create_var(t_data *data, char *name, char *val);
 void		export_def(t_data *data, char *arg);
@@ -346,7 +347,6 @@ void		set_redir_out(t_data *data, int *pos, t_cmd *cmd);
 char		*get_file_word(t_data *data, int *pos);
 char		*get_word(t_data *data, int *pos);
 void		free_redir_lst(t_redir *redir);
-
 
 // set.c
 void		set_redir(t_data *data, int *pos, t_cmd *cmd);

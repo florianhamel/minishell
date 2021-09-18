@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/17 20:42:13 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/17 22:39:39 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 17:07:06 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,8 @@ char	**get_args(t_data *data, t_cmd *cmd)
 		while (cmd->args[j] && !ft_is_ws(cmd->args[j]))
 		{
 			if (check_quote(cmd->args, j))
-			{
 				args[index] = concat_str(data, args[index], \
 				get_quote(data, cmd->args, &j));
-			}
 			else
 				args[index] = add_char(data, args[index], cmd->args[j++]);
 		}

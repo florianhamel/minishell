@@ -6,11 +6,28 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 17:38:56 by Fayel-ha          #+#    #+#             */
-/*   Updated: 2021/09/18 15:15:17 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/18 17:04:45 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	export_env(t_data *data)
+{
+	char	**env;
+	int		i;
+
+	env = get_env(data);
+	i = 0;
+	while (env[i])
+	{
+		ft_putstr_fd("export ", STDOUT_FILENO);
+		ft_putstr_fd(env[i], STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		i++;
+	}
+	ft_free_arr(env);
+}
 
 void	modify_var(t_data *data, t_var *var, char *val)
 {
@@ -81,6 +98,8 @@ int	ft_export(t_data *data, char **args)
 
 	status = 0;
 	i = 1;
+	if (!args[1])
+		export_env(data);
 	if (args[1] && is_option(args[1]))
 	{
 		error_option(args[1], "export", &status);
