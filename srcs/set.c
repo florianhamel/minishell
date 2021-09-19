@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/18 11:23:41 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/19 18:49:05 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,22 @@ void	set_redir(t_data *data, int *pos, t_cmd *cmd)
 void	set_args(t_data *data, int *pos, t_cmd *cmd)
 {
 	char	*var_val;
+	int		quote_type;
 
 	var_val = NULL;
 	while (data->str[*pos] && !is_redir(data->str[*pos]) && \
 	data->str[*pos] != '|')
 	{
 		if (data->str[*pos] == '$')
-		{	
 			cmd->args = concat_str(data, cmd->args, \
 			get_var(data, data->str, pos));
-		}
 		else if (check_quote(data->str, *pos))
-			while (data->str[*pos])
+		{
+			quote_type = data->str[*pos];
+			(*pos)++;
+			while (data->str[*pos] && data->str[*pos] != quote_type)
 				cmd->args = add_char(data, cmd->args, data->str[(*pos)++]);
+		}
 		else
 			cmd->args = add_char(data, cmd->args, data->str[(*pos)++]);
 	}
