@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/20 02:54:39 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/20 12:59:42 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ char		**get_args(t_data *data, t_cmd *cmd);
 
 // bin_utils.c
 int			check_slash_in(char *name);
-int			is_direct_path(char *name);
+int			is_direct_path(t_data *data, char *name);
 char		*concat_path_bin(t_data *data, char *path, char *bin);
 char		*get_var_path(t_data *data);
 

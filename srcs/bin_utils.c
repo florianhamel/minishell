@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 13:25:22 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/16 16:57:40 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/20 13:16:03 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,24 @@ int	check_slash_in(char *name)
 	return (0);
 }
 
-int	is_direct_path(char *name)
+int	is_direct_path(t_data *data, char *name)
 {
-	struct stat	statbuf;
+	struct stat	stat_buf;
 
 	if (check_slash_in(name))
-		if (stat(name, &statbuf) == SUCCESS)
+	{
+		if (stat(name, &stat_buf) == SUCCESS && (stat_buf.st_mode & S_IXUSR))
 			return (1);
+		else if (stat(name, &stat_buf) == SUCCESS)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(name, STDERR_FILENO);
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+			free_history(data->history);
+			free_data(data);
+			exit(126);
+		}
+	}
 	return (0);
 }
 
