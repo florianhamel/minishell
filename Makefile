@@ -6,7 +6,7 @@
 #    By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/04/25 20:20:38 by florianhame       #+#    #+#              #
-#    Updated: 2021/09/18 11:25:40 by fhamel           ###   ########.fr        #
+#    Updated: 2021/09/20 02:50:59 by fhamel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ _SRC_		=	args.c \
 				env.c \
 				free_exit_cmd.c \
 				free_exit_parsing.c \
+				ft_cd_utils.c \
 				ft_cd.c \
 				ft_echo.c \
 				ft_env.c \

@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 12:57:08 by Fayel-ha          #+#    #+#             */
-/*   Updated: 2021/09/18 11:54:26 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/19 22:57:34 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	ft_unset(t_data *data, char **args)
 	}
 	while (args[i])
 	{
-		if (is_valid_var(args[i]))
+		if (!data->cmd_lst->next && is_valid_var(args[i]))
 			unset_var(data, args[i]);
-		else
+		else if (!is_valid_var(args[i]))
 			error_identifier(args[i], "unset", &status);
 		i++;
 	}

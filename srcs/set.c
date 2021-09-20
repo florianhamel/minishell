@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 20:53:32 by fhamel            #+#    #+#             */
-/*   Updated: 2021/09/19 18:49:05 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/19 19:39:39 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ void	set_args(t_data *data, int *pos, t_cmd *cmd)
 		else if (check_quote(data->str, *pos))
 		{
 			quote_type = data->str[*pos];
-			(*pos)++;
+			cmd->args = add_char(data, cmd->args, data->str[(*pos)++]);
 			while (data->str[*pos] && data->str[*pos] != quote_type)
+				cmd->args = add_char(data, cmd->args, data->str[(*pos)++]);
+			if (data->str[*pos] == quote_type)
 				cmd->args = add_char(data, cmd->args, data->str[(*pos)++]);
 		}
 		else

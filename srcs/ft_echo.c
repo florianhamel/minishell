@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 19:31:49 by Fayel-ha          #+#    #+#             */
-/*   Updated: 2021/09/18 17:04:55 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/19 19:56:27 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int	ft_echo(char **args)
 			ft_putstr_fd(" ", 1);
 		i++;
 	}
-	if (args[1] && ft_strncmp(args[1], "-n", 3))
+	if (args[1] && !ft_strncmp(args[1], "-n", 3))
+		;
+	else
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	ft_free_arr(args);
 	return (0);

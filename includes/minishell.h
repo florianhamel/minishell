@@ -6,7 +6,7 @@
 /*   By: fhamel <fhamel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 16:28:02 by user42            #+#    #+#             */
-/*   Updated: 2021/09/18 17:07:48 by fhamel           ###   ########.fr       */
+/*   Updated: 2021/09/20 02:54:39 by fhamel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,12 @@ void		free_null(void **ptr);
 void		exit_strerror(void);
 void		free_parsing(t_read *data);
 void		exit_parsing(t_read *data);
+
+// ft_cd_utils.c
+void		error_cwd(int *status);
+int			check_stat_path(char *arg);
+void		error_path(char *arg, int *status);
+void		error_cd_args(int *status);
 
 // ft_cd.c
 void		edit_env_value(t_var *env, char *new_pwd, char *ex_pwd);
